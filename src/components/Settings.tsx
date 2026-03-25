@@ -1,0 +1,553 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label-simple'
+import { Badge } from '@/components/ui/badge'
+import SubscribersManager from '@/lib/subscribers'
+import { 
+  Settings as SettingsIcon, 
+  Globe,
+  Shield,
+  FileText,
+  Mail,
+  Users,
+  UserPlus,
+  Crown,
+  Trash2
+} from 'lucide-react'
+
+const translations = {
+  en: {
+    title: 'Settings',
+    theme: 'Theme',
+    dark: 'Dark',
+    light: 'Light',
+    language: 'Language',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Service',
+    account: 'Account Settings',
+    username: 'Username',
+    premium: 'Premium Status',
+    active: 'Active',
+    inactive: 'Inactive',
+    save: 'Save Settings',
+    saved: 'Settings saved successfully!',
+    error: 'Error saving settings',
+    selectLanguage: 'Select Language',
+    selectTheme: 'Select Theme',
+    admin: 'Administrator',
+    subscriberManagement: 'Subscriber Management',
+    addSubscriber: 'Add Subscriber',
+    removeSubscriber: 'Remove',
+    subscriberList: 'Current Subscribers',
+    noSubscribers: 'No subscribers found',
+    usernamePlaceholder: 'Enter username...',
+    addSuccess: 'Subscriber added successfully!',
+    removeSuccess: 'Subscriber removed successfully!',
+    adminOnly: 'Administrator Only'
+  },
+  es: {
+    title: 'Configuración',
+    theme: 'Tema',
+    dark: 'Oscuro',
+    light: 'Claro',
+    language: 'Idioma',
+    privacy: 'Política de Privacidad',
+    terms: 'Términos de Servicio',
+    account: 'Configuración de Cuenta',
+    username: 'Nombre de Usuario',
+    email: 'Correo Electrónico',
+    joined: 'Se unió',
+    premium: 'Estado Premium',
+    active: 'Activo',
+    inactive: 'Inactivo',
+    save: 'Guardar Configuración',
+    saved: '¡Configuración guardada con éxito!',
+    error: 'Error al guardar la configuración',
+    selectLanguage: 'Seleccionar Idioma',
+    selectTheme: 'Seleccionar Tema',
+    admin: 'Administrador',
+    subscriberManagement: 'Gestión de Suscriptores',
+    addSubscriber: 'Agregar Suscriptor',
+    removeSubscriber: 'Eliminar',
+    subscriberList: 'Suscriptores Actuales',
+    noSubscribers: 'No se encontraron suscriptores',
+    usernamePlaceholder: 'Ingrese nombre de usuario...',
+    addSuccess: '¡Suscriptor agregado con éxito!',
+    removeSuccess: '¡Suscriptor eliminado con éxito!',
+    adminOnly: 'Solo Administrador'
+  },
+  fr: {
+    title: 'Paramètres',
+    theme: 'Thème',
+    dark: 'Sombre',
+    light: 'Clair',
+    language: 'Langue',
+    privacy: 'Politique de Confidentialité',
+    terms: 'Conditions d\'Utilisation',
+    account: 'Paramètres du Compte',
+    username: 'Nom d\'Utilisateur',
+    premium: 'Statut Premium',
+    active: 'Actif',
+    inactive: 'Inactif',
+    save: 'Sauvegarder les Paramètres',
+    saved: 'Paramètres sauvegardés avec succès!',
+    error: 'Erreur lors de la sauvegarde des paramètres',
+    selectLanguage: 'Sélectionner la Langue',
+    selectTheme: 'Sélectionner le Thème',
+    admin: 'Administrateur',
+    subscriberManagement: 'Gestion des Abonnés',
+    addSubscriber: 'Ajouter un Abonné',
+    removeSubscriber: 'Supprimer',
+    subscriberList: 'Abonnés Actuels',
+    noSubscribers: 'Aucun abonné trouvé',
+    usernamePlaceholder: 'Entrez le nom d\'utilisateur...',
+    addSuccess: 'Abonné ajouté avec succès!',
+    removeSuccess: 'Abonné supprimé avec succès!',
+    adminOnly: 'Administrateur Seulement'
+  },
+  de: {
+    title: 'Einstellungen',
+    theme: 'Thema',
+    dark: 'Dunkel',
+    light: 'Hell',
+    language: 'Sprache',
+    privacy: 'Datenschutzerklärung',
+    terms: 'Nutzungsbedingungen',
+    account: 'Kontoeinstellungen',
+    username: 'Benutzername',
+    premium: 'Premium-Status',
+    active: 'Aktiv',
+    inactive: 'Inaktiv',
+    save: 'Einstellungen Speichern',
+    saved: 'Einstellungen erfolgreich gespeichert!',
+    error: 'Fehler beim Speichern der Einstellungen',
+    selectLanguage: 'Sprache Auswählen',
+    selectTheme: 'Thema Auswählen',
+    admin: 'Administrator',
+    subscriberManagement: 'Abonnenten-Verwaltung',
+    addSubscriber: 'Abonnent Hinzufügen',
+    removeSubscriber: 'Entfernen',
+    subscriberList: 'Aktuelle Abonnenten',
+    noSubscribers: 'Keine Abonnenten gefunden',
+    usernamePlaceholder: 'Benutzername eingeben...',
+    addSuccess: 'Abonnent erfolgreich hinzugefügt!',
+    removeSuccess: 'Abonnent erfolgreich entfernt!',
+    adminOnly: 'Nur Administrator'
+  },
+  ja: {
+    title: '設定',
+    theme: 'テーマ',
+    dark: 'ダーク',
+    light: 'ライト',
+    language: '言語',
+    privacy: 'プライバシーポリシー',
+    terms: '利用規約',
+    account: 'アカウント設定',
+    username: 'ユーザー名',
+    premium: 'プレミアムステータス',
+    active: 'アクティブ',
+    inactive: '非アクティブ',
+    save: '設定を保存',
+    saved: '設定が正常に保存されました！',
+    error: '設定の保存中にエラーが発生しました',
+    selectLanguage: '言語を選択',
+    selectTheme: 'テーマを選択',
+    admin: '管理者',
+    subscriberManagement: '購読者管理',
+    addSubscriber: '購読者を追加',
+    removeSubscriber: '削除',
+    subscriberList: '現在の購読者',
+    noSubscribers: '購読者が見つかりません',
+    usernamePlaceholder: 'ユーザー名を入力...',
+    addSuccess: '購読者が正常に追加されました！',
+    removeSuccess: '購読者が正常に削除されました！',
+    adminOnly: '管理者のみ'
+  }
+}
+
+type Language = keyof typeof translations
+
+interface SettingsProps {
+  user: any
+  language: 'en' | 'es' | 'fr' | 'de' | 'ja'
+  onLanguageChange: (newLanguage: 'en' | 'es' | 'fr' | 'de' | 'ja') => void
+}
+
+export function Settings({ user, language, onLanguageChange }: SettingsProps) {
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(language)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState('')
+  const [newSubscriber, setNewSubscriber] = useState('')
+  const [subscribers, setSubscribers] = useState(SubscribersManager.getInstance().getSubscribers())
+  const [subscribersManager] = useState(SubscribersManager.getInstance())
+  
+  // Ensure we're using the correct username from Kick API
+  const kickUsername = user?.username || ''
+  const isAdmin = user && subscribersManager.isAdmin(kickUsername)
+  const isSubscriber = user && subscribersManager.isSubscriber(kickUsername)
+  
+  // Debug logging to verify username consistency
+  useEffect(() => {
+    if (user) {
+      console.log('🔍 Settings - User data:', {
+        username: kickUsername,
+        display_name: user.display_name,
+        isAdmin,
+        isSubscriber
+      })
+      
+      // Debug storage contents
+      subscribersManager.debugStorage()
+      
+      // Add test function to window for manual testing
+      if (typeof window !== 'undefined') {
+        (window as any).testSubscriberRemoval = (username: string) => {
+          subscribersManager.testRemoval(username)
+        }
+        (window as any).testSubscriptionCheck = (username: string) => {
+          console.log('🧪 Manual subscription check for:', username)
+          const result = subscribersManager.isSubscriber(username)
+          console.log('🧪 Subscription result:', result)
+          console.log('🧪 Current subscriber list:', subscribersManager.getSubscribers())
+          subscribersManager.debugStorage()
+          return result
+        }
+        (window as any).forcePremiumUpdate = () => {
+          console.log('🧪 Forcing premium status update...')
+          window.dispatchEvent(new CustomEvent('subscriberListUpdated', {
+            detail: { subscribers: subscribersManager.getSubscribers() }
+          }))
+        }
+        console.log('🧪 Test functions available:')
+        console.log('  - window.testSubscriberRemoval("username")')
+        console.log('  - window.testSubscriptionCheck("username")')
+        console.log('  - window.forcePremiumUpdate()')
+      }
+    }
+  }, [user, kickUsername, isAdmin, isSubscriber])
+
+  const t = (key: keyof typeof translations.en) => translations[currentLanguage][key] || translations.en[key]
+
+  // Load language from localStorage on mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('language') as Language
+    if (savedLanguage) setCurrentLanguage(savedLanguage)
+  }, [])
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    setCurrentLanguage(newLanguage)
+    localStorage.setItem('language', newLanguage)
+    onLanguageChange(newLanguage)
+  }
+
+  const handleAddSubscriber = () => {
+    if (!newSubscriber.trim() || !isAdmin) return
+    
+    console.log('➕ Adding subscriber:', {
+      newUsername: newSubscriber.trim(),
+      addedBy: kickUsername,
+      currentSubscribers: subscribers
+    })
+    
+    const success = subscribersManager.addSubscriber(newSubscriber.trim(), kickUsername)
+    if (success) {
+      const updatedSubscribers = subscribersManager.getSubscribers()
+      console.log('✅ Subscriber added, new list:', updatedSubscribers)
+      setSubscribers(updatedSubscribers)
+      setNewSubscriber('')
+      setSaveMessage(t('addSuccess'))
+      setTimeout(() => setSaveMessage(''), 3000)
+      
+      // Trigger a re-check of the current user's premium status
+      // This will update the parent component's hasPremium state
+      window.dispatchEvent(new CustomEvent('subscriberListUpdated', {
+        detail: { subscribers: updatedSubscribers }
+      }))
+    }
+  }
+
+  const handleRemoveSubscriber = (username: string) => {
+    console.log('🗑️ Settings.handleRemoveSubscriber called:', {
+      username,
+      isAdmin,
+      kickUsername,
+      currentSubscribers: subscribers
+    })
+    
+    if (!isAdmin) {
+      console.log('❌ Not admin, cannot remove subscriber')
+      return
+    }
+    
+    console.log('🗑️ Calling subscribersManager.removeSubscriber...')
+    const success = subscribersManager.removeSubscriber(username, kickUsername)
+    console.log('🗑️ removeSubscriber result:', success)
+    
+    if (success) {
+      const updatedSubscribers = subscribersManager.getSubscribers()
+      console.log('🗑️ Got updated subscribers:', updatedSubscribers)
+      setSubscribers(updatedSubscribers)
+      setSaveMessage(t('removeSuccess'))
+      setTimeout(() => setSaveMessage(''), 3000)
+      
+      // Trigger a re-check of the current user's premium status
+      console.log('🗑️ Dispatching subscriberListUpdated event...')
+      window.dispatchEvent(new CustomEvent('subscriberListUpdated', {
+        detail: { subscribers: updatedSubscribers }
+      }))
+      console.log('🗑️ Event dispatched successfully')
+    } else {
+      console.log('❌ Failed to remove subscriber')
+    }
+  }
+
+  const handleSaveSettings = async () => {
+    setIsSaving(true)
+    setSaveMessage('')
+    
+    try {
+      // Simulate saving to backend
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      setSaveMessage(t('saved'))
+      setTimeout(() => setSaveMessage(''), 3000)
+    } catch (error) {
+      setSaveMessage(t('error'))
+      setTimeout(() => setSaveMessage(''), 3000)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const formatDate = (dateString: string) => {
+    // Only format dates on client-side to avoid hydration mismatch
+    if (typeof window === 'undefined') {
+      return dateString // Return raw date string during SSR
+    }
+    
+    const date = new Date(dateString)
+    return date.toLocaleDateString(language === 'en' ? 'en-US' : language, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
+  if (!user) {
+    return (
+      <Card className="bg-black border-green-500/30">
+        <CardHeader>
+          <CardTitle className="text-green-400 flex items-center gap-2">
+            <SettingsIcon className="w-5 h-5" />
+            {t('title')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center space-y-4">
+            <div className="text-gray-400">
+              <SettingsIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p className="text-lg mb-2">{t('title')}</p>
+              <p>Please sign in with your Kick account to access settings.</p>
+            </div>
+            <div className="text-yellow-400 text-sm">
+              <p>Sign in to customize your experience:</p>
+              <ul className="mt-2 space-y-1">
+                <li>• Theme preferences</li>
+                <li>• Language selection</li>
+                <li>• Account management</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-green-400 mb-2">{t('title')}</h2>
+        <p className="text-gray-300">Customize your experience and preferences</p>
+      </div>
+      
+      {/* Language Settings */}
+      <Card className="bg-black border-green-500/30">
+        <CardHeader>
+          <CardTitle className="text-green-400 flex items-center gap-2">
+            <Globe className="w-5 h-5" />
+            {t('language')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="text-green-400">{t('selectLanguage')}</Label>
+            <select
+              value={language}
+              onChange={(e) => handleLanguageChange(e.target.value as Language)}
+              className="w-full bg-black border border-green-500/50 rounded p-2 text-white"
+            >
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="ja">日本語</option>
+            </select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Account Settings */}
+      <Card className="bg-black border-green-500/30">
+        <CardHeader>
+          <CardTitle className="text-green-400 flex items-center gap-2">
+            <Shield className="w-5 h-5" />
+            {t('account')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-green-400">{t('username')}</Label>
+              <p className="text-white p-2 bg-black/50 rounded">{kickUsername}</p>
+            </div>
+            <div>
+              <Label className="text-green-400">Subscription Status</Label>
+              <div className="mt-2">
+                <Badge className={isSubscriber ? "bg-green-600/20 text-green-400 border-green-500" : "bg-gray-600/20 text-gray-400 border-gray-500"}>
+                  {isSubscriber ? 'Active Subscriber' : 'Free User'}
+                </Badge>
+                {isAdmin && (
+                  <Badge className="ml-2 bg-yellow-600/20 text-yellow-400 border-yellow-500">
+                    Admin
+                  </Badge>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Admin Badge */}
+      {isAdmin && (
+        <Card className="bg-black border-yellow-500/30">
+          <CardHeader>
+            <CardTitle className="text-yellow-400 flex items-center gap-2">
+              <Crown className="w-5 h-5" />
+              {t('admin')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2">
+              <Badge className="bg-yellow-600/20 text-yellow-400 border-yellow-500">
+                {t('adminOnly')}
+              </Badge>
+              <span className="text-gray-300 text-sm">Full system access</span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Subscriber Management - Admin Only */}
+      {isAdmin && (
+        <Card className="bg-black border-purple-500/30">
+          <CardHeader>
+            <CardTitle className="text-purple-400 flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              {t('subscriberManagement')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Add Subscriber */}
+            <div>
+              <Label className="text-purple-400">{t('addSubscriber')}</Label>
+              <div className="flex gap-2 mt-2">
+                <input
+                  type="text"
+                  value={newSubscriber}
+                  onChange={(e) => setNewSubscriber(e.target.value)}
+                  placeholder={t('usernamePlaceholder')}
+                  className="flex-1 bg-black border border-purple-500/50 rounded p-2 text-white"
+                  onKeyPress={(e) => e.key === 'Enter' && handleAddSubscriber()}
+                />
+                <Button
+                  onClick={handleAddSubscriber}
+                  className="bg-purple-600 hover:bg-purple-500 text-white"
+                >
+                  <UserPlus className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Subscribers List */}
+            <div>
+              <Label className="text-purple-400">{t('subscriberList')}</Label>
+              <div className="mt-2 space-y-2 max-h-40 overflow-y-auto">
+                {subscribers.length > 0 ? (
+                  subscribers.map((subscriber, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-black/50 rounded">
+                      <span className="text-white text-sm">{subscriber.username}</span>
+                      <Button
+                        onClick={() => handleRemoveSubscriber(subscriber.username)}
+                        className="bg-red-600 hover:bg-red-500 text-white p-1"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-400 text-sm">{t('noSubscribers')}</p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Save Button */}
+      <div className="flex justify-center">
+        <Button
+          onClick={handleSaveSettings}
+          disabled={isSaving}
+          className="bg-green-600 hover:bg-green-500 text-black px-8"
+        >
+          {isSaving ? (
+            <>
+              <div className="w-4 h-4 mr-2 border-2 border-green-600 border-t-transparent animate-spin" />
+              Saving...
+            </>
+          ) : (
+            t('save')
+          )}
+        </Button>
+      </div>
+
+      {/* Save Message */}
+      {saveMessage && (
+        <div className="text-center">
+          <p className={`text-sm ${saveMessage === t('saved') ? 'text-green-400' : 'text-red-400'}`}>
+            {saveMessage}
+          </p>
+        </div>
+      )}
+
+      {/* Subscription Message for Free Users */}
+      {!isSubscriber && (
+        <Card className="bg-black border-red-500/30">
+          <CardContent className="pt-6">
+            <div className="text-center space-y-2">
+              <p className="text-red-400 font-semibold">
+                Free User - Please Subscribe To Bulletbait604 to Unlock Premium Features
+              </p>
+              <p className="text-gray-400 text-sm">
+                ** Upgrades may take up to 48 hours to enable. Email: bulletbait604@gmail.com if there are any issues.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  )
+}
