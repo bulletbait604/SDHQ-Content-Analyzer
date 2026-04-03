@@ -158,7 +158,14 @@ return (
                   className="w-10 h-10 rounded-full border-2 border-green-500"
                 />
                 <div>
-                  <p className="text-green-400 font-semibold">{user.display_name}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-green-400 font-semibold">{user.display_name}</p>
+                    {hasPremium ? (
+                      <Badge className="bg-purple-600 text-white text-xs">Subscribed</Badge>
+                    ) : (
+                      <Badge className="bg-gray-600 text-white text-xs">Free User</Badge>
+                    )}
+                  </div>
                   <p className="text-gray-400 text-sm">@{user.username}</p>
                 </div>
                 <Button
@@ -168,7 +175,12 @@ return (
                   className="bg-gray-600 hover:bg-gray-500 text-white"
                 >
                   <Settings className="w-4 h-4 mr-2" />
-                  {t('settings')}
+                  {!hasPremium && (
+                    <span className="text-xs text-yellow-300">
+                      Free User - Please Subscribe To Bulletbait604 to Unlock Premium Features
+                    </span>
+                  )}
+                  {hasPremium && t('settings')}
                 </Button>
               </>
             )}
