@@ -171,6 +171,16 @@ export default function HomePage() {
     }
   }
 
+  const handleSelectAlgorithm = (algorithm: any) => {
+    setSelectedAlgorithm(algorithm)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedAlgorithm(null)
+  }
+
   if (!mounted) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -327,18 +337,22 @@ return (
           </TabsList>
 
           <TabsContent value="algorithm-info" className="mt-6">
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('algorithmInfo')}</h2>
-              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
-              <div className="max-w-md mx-auto">
-                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                  <div className="animate-pulse">
-                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
-                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
-                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
-                  </div>
-                </div>
+            <div className="space-y-8">
+              {/* Header */}
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">
+                  Social Media Algorithm Analysis
+                </h2>
+                <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+                  AI-powered insights into TikTok, Instagram, YouTube, Facebook Reels, and Twitter algorithms to maximize your content reach and engagement
+                </p>
               </div>
+
+              {/* Algorithm Carousel */}
+              <AlgorithmCarousel 
+                algorithms={algorithms}
+                onSelectAlgorithm={handleSelectAlgorithm}
+              />
             </div>
           </TabsContent>
 

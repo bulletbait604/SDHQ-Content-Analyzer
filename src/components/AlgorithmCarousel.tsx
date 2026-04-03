@@ -176,7 +176,6 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
       >
         {isAutoPlaying ? 'Pause' : 'Play'}
       </Button>
-      </div>
 
       {/* Dots Indicator */}
       <div className="flex justify-center gap-2 mt-6">
