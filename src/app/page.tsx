@@ -269,7 +269,7 @@ return (
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               {t('algorithmInfo')}
@@ -294,9 +294,6 @@ return (
               <Hash className="w-4 h-4" />
               {t('tagGenerator')} {t('premium')}
             </TabsTrigger>
-          </TabsList>
-
-          <TabsList className="grid w-full grid-cols-1 mb-8">
             <TabsTrigger 
               value="content-analysis" 
               className="flex items-center gap-2"
