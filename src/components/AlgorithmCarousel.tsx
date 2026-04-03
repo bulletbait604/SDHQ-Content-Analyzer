@@ -57,7 +57,7 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-4">
                     <div 
-                      className="w-16 h-16 rounded-xl flex items-center justify-center p-3"
+                      className="w-16 h-16 rounded-xl flex items-center justify-center p-3 relative"
                       style={{ 
                         background: `linear-gradient(135deg, ${algorithm.primaryColor}20, ${algorithm.secondaryColor}20)`,
                         border: `2px solid ${algorithm.primaryColor}`
@@ -67,11 +67,29 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                         src={algorithm.logo} 
                         alt={algorithm.name}
                         className="w-full h-full object-contain"
+                        style={{ maxHeight: '100%', maxWidth: '100%' }}
+                        onLoad={() => console.log(`✅ ${algorithm.name} logo loaded`)}
                         onError={(e) => {
+                          console.log(`❌ ${algorithm.name} logo failed to load:`, algorithm.logo)
                           const target = e.target as HTMLImageElement
-                          target.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='white'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='8'%3E${algorithm.name.charAt(0)}%3C/text%3E%3C/svg%3E`
+                          target.style.display = 'none'
                         }}
                       />
+                      <div 
+                        className="absolute inset-0 flex items-center justify-center"
+                        style={{ color: 'white', fontSize: '24px', fontWeight: 'bold', display: 'none' }}
+                        ref={(el) => {
+                          if (el) {
+                            const img = el.previousElementSibling as HTMLImageElement
+                            if (img && img.complete && img.naturalHeight === 0) {
+                              el.style.display = 'flex'
+                              img.style.display = 'none'
+                            }
+                          }
+                        }}
+                      >
+                        {algorithm.name.charAt(0)}
+                      </div>
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-white mb-1">{algorithm.name}</h3>
