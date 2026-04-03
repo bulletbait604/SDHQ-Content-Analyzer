@@ -18,166 +18,15 @@ import {
   Trash2
 } from 'lucide-react'
 
-const translations = {
-  en: {
-    title: 'Settings',
-    theme: 'Theme',
-    dark: 'Dark',
-    light: 'Light',
-    language: 'Language',
-    privacy: 'Privacy Policy',
-    terms: 'Terms of Service',
-    account: 'Account Settings',
-    username: 'Username',
-    premium: 'Premium Status',
-    active: 'Active',
-    inactive: 'Inactive',
-    save: 'Save Settings',
-    saved: 'Settings saved successfully!',
-    error: 'Error saving settings',
-    selectLanguage: 'Select Language',
-    selectTheme: 'Select Theme',
-    admin: 'Administrator',
-    subscriberManagement: 'Subscriber Management',
-    addSubscriber: 'Add Subscriber',
-    removeSubscriber: 'Remove',
-    subscriberList: 'Current Subscribers',
-    noSubscribers: 'No subscribers found',
-    usernamePlaceholder: 'Enter username...',
-    addSuccess: 'Subscriber added successfully!',
-    removeSuccess: 'Subscriber removed successfully!',
-    adminOnly: 'Administrator Only'
-  },
-  es: {
-    title: 'Configuración',
-    theme: 'Tema',
-    dark: 'Oscuro',
-    light: 'Claro',
-    language: 'Idioma',
-    privacy: 'Política de Privacidad',
-    terms: 'Términos de Servicio',
-    account: 'Configuración de Cuenta',
-    username: 'Nombre de Usuario',
-    email: 'Correo Electrónico',
-    joined: 'Se unió',
-    premium: 'Estado Premium',
-    active: 'Activo',
-    inactive: 'Inactivo',
-    save: 'Guardar Configuración',
-    saved: '¡Configuración guardada con éxito!',
-    error: 'Error al guardar la configuración',
-    selectLanguage: 'Seleccionar Idioma',
-    selectTheme: 'Seleccionar Tema',
-    admin: 'Administrador',
-    subscriberManagement: 'Gestión de Suscriptores',
-    addSubscriber: 'Agregar Suscriptor',
-    removeSubscriber: 'Eliminar',
-    subscriberList: 'Suscriptores Actuales',
-    noSubscribers: 'No se encontraron suscriptores',
-    usernamePlaceholder: 'Ingrese nombre de usuario...',
-    addSuccess: '¡Suscriptor agregado con éxito!',
-    removeSuccess: '¡Suscriptor eliminado con éxito!',
-    adminOnly: 'Solo Administrador'
-  },
-  fr: {
-    title: 'Paramètres',
-    theme: 'Thème',
-    dark: 'Sombre',
-    light: 'Clair',
-    language: 'Langue',
-    privacy: 'Politique de Confidentialité',
-    terms: 'Conditions d\'Utilisation',
-    account: 'Paramètres du Compte',
-    username: 'Nom d\'Utilisateur',
-    premium: 'Statut Premium',
-    active: 'Actif',
-    inactive: 'Inactif',
-    save: 'Sauvegarder les Paramètres',
-    saved: 'Paramètres sauvegardés avec succès!',
-    error: 'Erreur lors de la sauvegarde des paramètres',
-    selectLanguage: 'Sélectionner la Langue',
-    selectTheme: 'Sélectionner le Thème',
-    admin: 'Administrateur',
-    subscriberManagement: 'Gestion des Abonnés',
-    addSubscriber: 'Ajouter un Abonné',
-    removeSubscriber: 'Supprimer',
-    subscriberList: 'Abonnés Actuels',
-    noSubscribers: 'Aucun abonné trouvé',
-    usernamePlaceholder: 'Entrez le nom d\'utilisateur...',
-    addSuccess: 'Abonné ajouté avec succès!',
-    removeSuccess: 'Abonné supprimé avec succès!',
-    adminOnly: 'Administrateur Seulement'
-  },
-  de: {
-    title: 'Einstellungen',
-    theme: 'Thema',
-    dark: 'Dunkel',
-    light: 'Hell',
-    language: 'Sprache',
-    privacy: 'Datenschutzerklärung',
-    terms: 'Nutzungsbedingungen',
-    account: 'Kontoeinstellungen',
-    username: 'Benutzername',
-    premium: 'Premium-Status',
-    active: 'Aktiv',
-    inactive: 'Inaktiv',
-    save: 'Einstellungen Speichern',
-    saved: 'Einstellungen erfolgreich gespeichert!',
-    error: 'Fehler beim Speichern der Einstellungen',
-    selectLanguage: 'Sprache Auswählen',
-    selectTheme: 'Thema Auswählen',
-    admin: 'Administrator',
-    subscriberManagement: 'Abonnenten-Verwaltung',
-    addSubscriber: 'Abonnent Hinzufügen',
-    removeSubscriber: 'Entfernen',
-    subscriberList: 'Aktuelle Abonnenten',
-    noSubscribers: 'Keine Abonnenten gefunden',
-    usernamePlaceholder: 'Benutzername eingeben...',
-    addSuccess: 'Abonnent erfolgreich hinzugefügt!',
-    removeSuccess: 'Abonnent erfolgreich entfernt!',
-    adminOnly: 'Nur Administrator'
-  },
-  ja: {
-    title: '設定',
-    theme: 'テーマ',
-    dark: 'ダーク',
-    light: 'ライト',
-    language: '言語',
-    privacy: 'プライバシーポリシー',
-    terms: '利用規約',
-    account: 'アカウント設定',
-    username: 'ユーザー名',
-    premium: 'プレミアムステータス',
-    active: 'アクティブ',
-    inactive: '非アクティブ',
-    save: '設定を保存',
-    saved: '設定が正常に保存されました！',
-    error: '設定の保存中にエラーが発生しました',
-    selectLanguage: '言語を選択',
-    selectTheme: 'テーマを選択',
-    admin: '管理者',
-    subscriberManagement: '購読者管理',
-    addSubscriber: '購読者を追加',
-    removeSubscriber: '削除',
-    subscriberList: '現在の購読者',
-    noSubscribers: '購読者が見つかりません',
-    usernamePlaceholder: 'ユーザー名を入力...',
-    addSuccess: '購読者が正常に追加されました！',
-    removeSuccess: '購読者が正常に削除されました！',
-    adminOnly: '管理者のみ'
-  }
-}
-
-type Language = keyof typeof translations
+import { translations, Language } from '@/lib/translations'
 
 interface SettingsProps {
   user: any
-  language: 'en' | 'es' | 'fr' | 'de' | 'ja'
-  onLanguageChange: (newLanguage: 'en' | 'es' | 'fr' | 'de' | 'ja') => void
+  language: Language
+  onLanguageChange: (newLanguage: Language) => void
 }
 
 export function Settings({ user, language, onLanguageChange }: SettingsProps) {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(language)
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
   const [newSubscriber, setNewSubscriber] = useState('')
@@ -189,59 +38,16 @@ export function Settings({ user, language, onLanguageChange }: SettingsProps) {
   const isAdmin = user && subscribersManager.isAdmin(kickUsername)
   const isSubscriber = user && subscribersManager.isSubscriber(kickUsername)
   
-  // Debug logging to verify username consistency
-  useEffect(() => {
-    if (user) {
-      console.log('🔍 Settings - User data:', {
-        username: kickUsername,
-        display_name: user.display_name,
-        isAdmin,
-        isSubscriber
-      })
-      
-      // Debug storage contents
-      subscribersManager.debugStorage()
-      
-      // Add test function to window for manual testing
-      if (typeof window !== 'undefined') {
-        (window as any).testSubscriberRemoval = (username: string) => {
-          subscribersManager.testRemoval(username)
-        }
-        (window as any).testSubscriptionCheck = (username: string) => {
-          console.log('🧪 Manual subscription check for:', username)
-          const result = subscribersManager.isSubscriber(username)
-          console.log('🧪 Subscription result:', result)
-          console.log('🧪 Current subscriber list:', subscribersManager.getSubscribers())
-          subscribersManager.debugStorage()
-          return result
-        }
-        (window as any).forcePremiumUpdate = () => {
-          console.log('🧪 Forcing premium status update...')
-          window.dispatchEvent(new CustomEvent('subscriberListUpdated', {
-            detail: { subscribers: subscribersManager.getSubscribers() }
-          }))
-        }
-        console.log('🧪 Test functions available:')
-        console.log('  - window.testSubscriberRemoval("username")')
-        console.log('  - window.testSubscriptionCheck("username")')
-        console.log('  - window.forcePremiumUpdate()')
-      }
-    }
-  }, [user, kickUsername, isAdmin, isSubscriber])
-
-  const t = (key: keyof typeof translations.en) => translations[currentLanguage][key] || translations.en[key]
+  // Translation helper
+  const t = (key: keyof typeof translations.en) => translations[language][key] || translations.en[key]
 
   // Load language from localStorage on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as Language
-    if (savedLanguage) setCurrentLanguage(savedLanguage)
+    if (savedLanguage && savedLanguage !== language) {
+      onLanguageChange(savedLanguage)
+    }
   }, [])
-
-  const handleLanguageChange = (newLanguage: Language) => {
-    setCurrentLanguage(newLanguage)
-    localStorage.setItem('language', newLanguage)
-    onLanguageChange(newLanguage)
-  }
 
   const handleAddSubscriber = () => {
     if (!newSubscriber.trim() || !isAdmin) return
@@ -386,7 +192,7 @@ export function Settings({ user, language, onLanguageChange }: SettingsProps) {
             <Label className="text-green-400">{t('selectLanguage')}</Label>
             <select
               value={language}
-              onChange={(e) => handleLanguageChange(e.target.value as Language)}
+              onChange={(e) => onLanguageChange(e.target.value as Language)}
               className="w-full bg-black border border-green-500/50 rounded p-2 text-white"
             >
               <option value="en">English</option>

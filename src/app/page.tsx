@@ -11,12 +11,9 @@ import { KickAuth } from '@/components/KickAuth'
 import { ClipAnalysis } from '@/components/ClipAnalysis'
 import { Settings as SettingsComponent } from '@/components/Settings'
 import { Footer } from '@/components/Footer'
-import { AlgorithmUpdater } from '@/lib/algorithm-updater'
-import { PremiumAccess } from '@/lib/premium-access'
+import { translations, Language } from '@/lib/translations'
 import SubscribersManager from '@/lib/subscribers'
 
-// Get instance using the static method
-const algorithmUpdater = AlgorithmUpdater.getInstance()
 import { 
   Upload, 
   Play, 
@@ -39,9 +36,12 @@ import {
 export default function HomePage() {
   const [user, setUser] = useState<any>(null)
   const [hasPremium, setHasPremium] = useState(false)
-  const [language, setLanguage] = useState<'en' | 'es' | 'fr' | 'de' | 'ja'>('en')
+  const [language, setLanguage] = useState<Language>('en')
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [mounted, setMounted] = useState(false)
+
+  // Translation helper
+  const t = (key: keyof typeof translations.en) => translations[language][key] || translations.en[key]
 
   useEffect(() => {
     setMounted(true)
@@ -63,14 +63,14 @@ export default function HomePage() {
     if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem('kickUser')
       const storedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null
-      const storedLanguage = localStorage.getItem('language') as 'en' | 'es' | 'fr' | 'de' | 'ja' | null | undefined
+      const storedLanguage = localStorage.getItem('language') as Language | null
       
       if (storedTheme) {
         setTheme(storedTheme)
       }
       
       if (storedLanguage) {
-        setLanguage(storedLanguage as 'en' | 'es' | 'fr' | 'de' | 'ja')
+        setLanguage(storedLanguage as Language)
       }
       
       if (storedUser) {
@@ -110,7 +110,7 @@ export default function HomePage() {
     }
   }
 
-  const handleLanguageChange = (newLanguage: 'en' | 'es' | 'fr' | 'de' | 'ja') => {
+  const handleLanguageChange = (newLanguage: Language) => {
     setLanguage(newLanguage)
     if (typeof window !== 'undefined') {
       localStorage.setItem('language', newLanguage)
@@ -140,10 +140,10 @@ export default function HomePage() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-            SDHQ Content Optimizer
+            {t('appTitle')}
           </h1>
           <p className="text-center text-gray-400 mb-8">
-            AI-powered content optimization with algorithm research
+            {t('appDescription')}
           </p>
         </div>
 
@@ -151,30 +151,30 @@ export default function HomePage() {
           <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="clip-analysis" className="flex items-center gap-2">
               <Video className="w-4 h-4" />
-              Clip Analysis
+              {t('clipAnalysis')}
             </TabsTrigger>
             <TabsTrigger value="tag-generator" className="flex items-center gap-2">
               <Hash className="w-4 h-4" />
-              Tag Generator
+              {t('tagGenerator')}
             </TabsTrigger>
             <TabsTrigger value="content-analysis" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
-              Content Analysis
+              {t('contentAnalysis')}
             </TabsTrigger>
             <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
-              Algorithm Info
+              {t('algorithmInfo')}
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
-              Settings
+              {t('settings')}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="clip-analysis" className="mt-6">
             <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Clip Analysis</h2>
-              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('clipAnalysis')}</h2>
+              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
               <div className="max-w-md mx-auto">
                 <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
                   <div className="animate-pulse">
@@ -189,8 +189,8 @@ export default function HomePage() {
 
           <TabsContent value="tag-generator" className="mt-6">
             <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Tag Generator</h2>
-              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('tagGenerator')}</h2>
+              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
               <div className="max-w-md mx-auto">
                 <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
                   <div className="animate-pulse">
@@ -205,8 +205,8 @@ export default function HomePage() {
 
           <TabsContent value="content-analysis" className="mt-6">
             <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Content Analysis</h2>
-              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('contentAnalysis')}</h2>
+              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
               <div className="max-w-md mx-auto">
                 <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
                   <div className="animate-pulse">
@@ -221,8 +221,8 @@ export default function HomePage() {
 
           <TabsContent value="algorithm-info" className="mt-6">
             <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">Algorithm Info</h2>
-              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('algorithmInfo')}</h2>
+              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
               <div className="max-w-md mx-auto">
                 <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
                   <div className="animate-pulse">
@@ -240,7 +240,7 @@ export default function HomePage() {
               <SettingsComponent user={user} language={language} onLanguageChange={handleLanguageChange} />
             ) : (
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-green-400 mb-2">Settings</h2>
+                <h2 className="text-2xl font-bold text-green-400 mb-2">{t('settings')}</h2>
                 <p className="text-gray-300">Please log in to access settings</p>
               </div>
             )}
