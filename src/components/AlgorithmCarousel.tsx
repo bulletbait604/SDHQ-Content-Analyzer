@@ -57,7 +57,7 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-4">
                     <div 
-                      className="w-16 h-16 rounded-xl flex items-center justify-center p-3 relative"
+                      className="w-16 h-16 rounded-xl flex items-center justify-center p-2 relative"
                       style={{ 
                         background: `linear-gradient(135deg, ${algorithm.primaryColor}20, ${algorithm.secondaryColor}20)`,
                         border: `2px solid ${algorithm.primaryColor}`
@@ -67,7 +67,11 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                         src={algorithm.logo} 
                         alt={algorithm.name}
                         className="w-full h-full object-contain"
-                        style={{ maxHeight: '100%', maxWidth: '100%' }}
+                        style={{ 
+                          maxHeight: '48px', 
+                          maxWidth: '48px',
+                          objectFit: 'contain'
+                        }}
                         onLoad={() => console.log(`✅ ${algorithm.name} logo loaded`)}
                         onError={(e) => {
                           console.log(`❌ ${algorithm.name} logo failed to load:`, algorithm.logo)
@@ -77,7 +81,7 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                       />
                       <div 
                         className="absolute inset-0 flex items-center justify-center"
-                        style={{ color: 'white', fontSize: '24px', fontWeight: 'bold', display: 'none' }}
+                        style={{ color: 'white', fontSize: '20px', fontWeight: 'bold', display: 'none' }}
                         ref={(el) => {
                           if (el) {
                             const img = el.previousElementSibling as HTMLImageElement
