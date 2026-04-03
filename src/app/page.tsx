@@ -35,6 +35,9 @@ import {
 } from 'lucide-react'
 import UpgradePage from '@/components/UpgradePage'
 import AdminDashboard from '@/components/AdminDashboard'
+import AlgorithmCarousel from '@/components/AlgorithmCarousel'
+import AlgorithmDetailsModal from '@/components/AlgorithmDetailsModal'
+import { algorithmAnalyzer } from '@/lib/algorithmAnalyzer'
 
 export default function HomePage() {
   const [user, setUser] = useState<any>(null)
@@ -43,6 +46,9 @@ export default function HomePage() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('algorithm-info')
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState<any>(null)
+  const [algorithms, setAlgorithms] = useState<any[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Translation helper
   const t = (key: keyof typeof translations.en) => translations[language][key] || translations.en[key]
@@ -450,7 +456,7 @@ return (
 
           <TabsContent value="settings" className="mt-6">
             {user ? (
-              <SettingsComponent user={user} language={language} onLanguageChange={handleLanguageChange} />
+              <SettingsComponent user={user} language={language} onLanguageChange={handleLanguageChange} setActiveTab={setActiveTab} />
             ) : (
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-green-400 mb-2">{t('settings')}</h2>
@@ -478,6 +484,13 @@ return (
 
         <Footer language={language} />
       </div>
+
+      {/* Algorithm Details Modal */}
+      <AlgorithmDetailsModal 
+        algorithm={selectedAlgorithm}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   )
 }

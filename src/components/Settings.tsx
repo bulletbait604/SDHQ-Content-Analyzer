@@ -25,9 +25,10 @@ interface SettingsProps {
   user: any
   language: Language
   onLanguageChange: (newLanguage: Language) => void
+  setActiveTab?: (tab: string) => void
 }
 
-export function Settings({ user, language, onLanguageChange }: SettingsProps) {
+export function Settings({ user, language, onLanguageChange, setActiveTab }: SettingsProps) {
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
   const [newSubscriber, setNewSubscriber] = useState('')
@@ -268,11 +269,9 @@ export function Settings({ user, language, onLanguageChange }: SettingsProps) {
             <CardContent>
               <Button
                 onClick={() => {
-                  // Navigate to admin dashboard
-                  window.location.hash = 'admin-dashboard'
-                  // Force tab change
-                  const event = new CustomEvent('tabChange', { detail: 'admin-dashboard' })
-                  window.dispatchEvent(event)
+                  if (setActiveTab) {
+                    setActiveTab('admin-dashboard')
+                  }
                 }}
                 className="bg-purple-600 hover:bg-purple-500 text-white w-full"
               >
