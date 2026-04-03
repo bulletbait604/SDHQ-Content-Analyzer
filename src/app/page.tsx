@@ -182,7 +182,7 @@ return (
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center mb-8">
           {/* Left side - User info and Settings */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {user && (
               <>
                 <img 
@@ -243,22 +243,22 @@ return (
 
       {/* Subscription Message for Free Users */}
       {user && !hasPremium && (
-        <div className="container mx-auto px-4 mb-4">
-          <div className="bg-yellow-900/20 border border-yellow-600/50 rounded-lg p-4 text-center">
-            <p className="text-yellow-300 text-sm font-medium">
+        <div className="container mx-auto px-4 mb-2">
+          <div className="bg-yellow-900/20 border border-yellow-600/50 rounded-lg p-2 text-center">
+            <p className="text-yellow-300 text-xs font-medium">
               Free User - Please Subscribe To Bulletbait604 to Unlock Premium Features
             </p>
           </div>
         </div>
       )}
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <div className="flex flex-col items-center justify-center mb-8">
+      <div className="container mx-auto px-4 py-4">
+        <div className="mb-4">
+          <div className="flex flex-col items-center justify-center mb-4">
             <img 
               src="https://i.ibb.co/rG8Fz6m5/SDHQ-12-3-2023.png" 
               alt="SDHQ Content Optimizer"
-              className="h-16 w-auto mb-4"
+              className="h-32 w-auto mb-2"
               onLoad={() => console.log('✅ Logo loaded successfully')}
               onError={(e: SyntheticEvent<HTMLImageElement>) => {
                 console.log('❌ Logo failed to load:', e)
@@ -267,10 +267,10 @@ return (
                 target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236633'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='14' fill='white' text-anchor='middle'%3ESDHQ%3C/text%3E%3C/svg%3E"
               }}
             />
-            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold mb-1 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
               {t('appTitle')}
             </h1>
-            <p className="text-center text-gray-400 mb-8">
+            <p className="text-center text-gray-400 mb-4">
               {t('appDescription')}
             </p>
           </div>
