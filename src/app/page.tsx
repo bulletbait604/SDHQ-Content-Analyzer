@@ -254,12 +254,19 @@ return (
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-            {t('appTitle')}
-          </h1>
-          <p className="text-center text-gray-400 mb-8">
-            {t('appDescription')}
-          </p>
+          <div className="flex flex-col items-center justify-center mb-8">
+            <img 
+              src="https://ibb.co/hRQL4Wy2" 
+              alt="SDHQ Content Optimizer"
+              className="h-16 w-auto mb-4"
+            />
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+              {t('appTitle')}
+            </h1>
+            <p className="text-center text-gray-400 mb-8">
+              {t('appDescription')}
+            </p>
+          </div>
           
           {/* KICK Login Option */}
           {!user && (
