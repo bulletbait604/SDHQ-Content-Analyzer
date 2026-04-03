@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Hash, TrendingUp, Target, Zap, RefreshCw, Download } from 'lucide-react'
-import { generateComprehensiveTagDatabase, getPlatformTags, getTrendingTags, TrendingTagsDatabase, TagData } from '@/lib/tagDatabase'
+import { getPlatformTags, getTrendingTags, TagData, trendingTagsDatabase } from '@/data/trendingTags'
 
 interface GeneratedTag {
   tag: string
@@ -19,16 +19,26 @@ interface GeneratedTag {
 }
 
 const TAG_COUNT_OPTIONS = [
+  { value: '1', label: '1 Tag' },
+  { value: '2', label: '2 Tags' },
+  { value: '3', label: '3 Tags' },
+  { value: '4', label: '4 Tags' },
   { value: '5', label: '5 Tags' },
+  { value: '6', label: '6 Tags' },
+  { value: '7', label: '7 Tags' },
+  { value: '8', label: '8 Tags' },
+  { value: '9', label: '9 Tags' },
   { value: '10', label: '10 Tags' },
+  { value: '11', label: '11 Tags' },
+  { value: '12', label: '12 Tags' },
+  { value: '13', label: '13 Tags' },
+  { value: '14', label: '14 Tags' },
   { value: '15', label: '15 Tags' },
-  { value: '20', label: '20 Tags' },
-  { value: '25', label: '25 Tags' },
-  { value: '30', label: '30 Tags' },
-  { value: '40', label: '40 Tags' },
-  { value: '50', label: '50 Tags' },
-  { value: '75', label: '75 Tags' },
-  { value: '100', label: '100 Tags' }
+  { value: '16', label: '16 Tags' },
+  { value: '17', label: '17 Tags' },
+  { value: '18', label: '18 Tags' },
+  { value: '19', label: '19 Tags' },
+  { value: '20', label: '20 Tags' }
 ]
 
 export default function TagGenerator() {
@@ -38,67 +48,12 @@ export default function TagGenerator() {
   const [generatedTags, setGeneratedTags] = useState<GeneratedTag[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [copiedTags, setCopiedTags] = useState<string[]>([])
-  const [trendingDatabase, setTrendingDatabase] = useState<TrendingTagsDatabase | null>(null)
   const [lastDatabaseUpdate, setLastDatabaseUpdate] = useState<string>('')
-  const [databaseLoading, setDatabaseLoading] = useState(true)
 
-  // Initialize comprehensive trending tags database
+  // Initialize database info
   useEffect(() => {
-    initializeTrendingDatabase()
-    scheduleWeeklyUpdates()
+    setLastDatabaseUpdate(new Date().toISOString())
   }, [])
-
-  const initializeTrendingDatabase = () => {
-    setDatabaseLoading(true)
-    try {
-      console.log('🔄 Initializing optimized tag database (10,000 tags per platform)...')
-      
-      // Generate optimized database
-      const database = generateComprehensiveTagDatabase()
-      
-      setTrendingDatabase(database)
-      setLastDatabaseUpdate(new Date().toISOString())
-      
-      // Save to localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('sdhq_comprehensive_tags', JSON.stringify(database))
-      }
-      
-      console.log('✅ Optimized tag database initialized:')
-      console.log(`📊 TikTok: ${database.tiktok.tags.length} tags`)
-      console.log(`📊 Instagram: ${database.instagram.tags.length} tags`)
-      console.log(`📊 YouTube: ${database.youtube.tags.length} tags`)
-      console.log(`📊 Twitter: ${database.twitter.tags.length} tags`)
-      console.log(`📊 Facebook: ${database.facebook.tags.length} tags`)
-      console.log(`📊 Total: ${Object.values(database).reduce((acc, platform) => acc + platform.tags.length, 0)} tags`)
-    } catch (error) {
-      console.error('Error initializing tag database:', error)
-      // Set fallback empty database
-      setTrendingDatabase({
-        tiktok: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
-        instagram: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
-        youtube: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
-        twitter: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
-        facebook: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] }
-      })
-    } finally {
-      setDatabaseLoading(false)
-    }
-  }
-
-  const scheduleWeeklyUpdates = () => {
-    // Schedule weekly updates for trending tags
-    const updateTrendingTags = () => {
-      console.log('🔄 Updating comprehensive trending tags database...')
-      initializeTrendingDatabase()
-      
-      // Schedule next update
-      setTimeout(updateTrendingTags, 7 * 24 * 60 * 60 * 1000) // 7 days
-    }
-
-    // Start the weekly update cycle
-    setTimeout(updateTrendingTags, 7 * 24 * 60 * 60 * 1000) // First update in 7 days
-  }
 
   const generateTags = async () => {
     if (!title || !platform) {
@@ -109,12 +64,12 @@ export default function TagGenerator() {
     setIsGenerating(true)
     
     try {
-      // Simulate AI processing with larger dataset
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Simulate AI processing
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
-      // Get platform-specific tags from comprehensive database
-      const platformTags = getPlatformTags(trendingDatabase!, platform)
-      const weeklyTrends = getTrendingTags(trendingDatabase!, platform)
+      // Get platform-specific tags from static database
+      const platformTags = getPlatformTags(platform)
+      const weeklyTrends = getTrendingTags(platform)
       
       console.log(`🔍 Analyzing ${platformTags.length} tags for ${platform}...`)
       
@@ -307,18 +262,13 @@ export default function TagGenerator() {
           {/* Generate Button */}
           <Button
             onClick={generateTags}
-            disabled={!title || !platform || isGenerating || databaseLoading}
+            disabled={!title || !platform || isGenerating}
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold"
           >
             {isGenerating ? (
               <>
                 <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
                 Generating Tags...
-              </>
-            ) : databaseLoading ? (
-              <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                Loading Database...
               </>
             ) : (
               <>
@@ -437,39 +387,37 @@ export default function TagGenerator() {
             <div className="flex items-center justify-between">
               <span className="text-gray-300">Total Tags in Database:</span>
               <span className="text-gray-400">
-                {trendingDatabase ? Object.values(trendingDatabase).reduce((acc, platform) => acc + platform.tags.length, 0).toLocaleString() : '0'}
+                {Object.values(trendingTagsDatabase).reduce((acc, platform) => acc + platform.tags.length, 0).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-gray-300">Next Update:</span>
               <span className="text-gray-400">
-                {lastDatabaseUpdate ? new Date(new Date(lastDatabaseUpdate).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString() : 'Unknown'}
+                Static database (no auto-updates)
               </span>
             </div>
-            {trendingDatabase && (
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
-                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                  <div className="text-lg font-bold text-pink-400">{trendingDatabase.tiktok.tags.length.toLocaleString()}</div>
-                  <div className="text-xs text-gray-400">TikTok Tags</div>
-                </div>
-                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                  <div className="text-lg font-bold text-orange-400">{trendingDatabase.instagram.tags.length.toLocaleString()}</div>
-                  <div className="text-xs text-gray-400">Instagram Tags</div>
-                </div>
-                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                  <div className="text-lg font-bold text-red-400">{trendingDatabase.youtube.tags.length.toLocaleString()}</div>
-                  <div className="text-xs text-gray-400">YouTube Tags</div>
-                </div>
-                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                  <div className="text-lg font-bold text-blue-400">{trendingDatabase.twitter.tags.length.toLocaleString()}</div>
-                  <div className="text-xs text-gray-400">Twitter Tags</div>
-                </div>
-                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                  <div className="text-lg font-bold text-green-400">{trendingDatabase.facebook.tags.length.toLocaleString()}</div>
-                  <div className="text-xs text-gray-400">Facebook Tags</div>
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
+              <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                <div className="text-lg font-bold text-pink-400">{trendingTagsDatabase.tiktok.tags.length.toLocaleString()}</div>
+                <div className="text-xs text-gray-400">TikTok Tags</div>
               </div>
-            )}
+              <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                <div className="text-lg font-bold text-orange-400">{trendingTagsDatabase.instagram.tags.length.toLocaleString()}</div>
+                <div className="text-xs text-gray-400">Instagram Tags</div>
+              </div>
+              <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                <div className="text-lg font-bold text-red-400">{trendingTagsDatabase.youtube.tags.length.toLocaleString()}</div>
+                <div className="text-xs text-gray-400">YouTube Tags</div>
+              </div>
+              <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                <div className="text-lg font-bold text-blue-400">{trendingTagsDatabase.twitter.tags.length.toLocaleString()}</div>
+                <div className="text-xs text-gray-400">Twitter Tags</div>
+              </div>
+              <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                <div className="text-lg font-bold text-green-400">{trendingTagsDatabase.facebook.tags.length.toLocaleString()}</div>
+                <div className="text-xs text-gray-400">Facebook Tags</div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
