@@ -113,9 +113,12 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                       <Zap className="w-5 h-5 text-purple-400" />
                       <h4 className="text-purple-400 font-semibold">AI Analysis</h4>
                     </div>
-                    <p className="text-purple-300 text-sm leading-relaxed">
-                      {algorithm.aiAnalysis}
-                    </p>
+                    <div className="text-purple-300 text-sm leading-relaxed max-h-32 overflow-y-auto">
+                      {algorithm.aiAnalysis.length > 200 
+                        ? `${algorithm.aiAnalysis.substring(0, 200)}...` 
+                        : algorithm.aiAnalysis
+                      }
+                    </div>
                   </div>
                 )}
 

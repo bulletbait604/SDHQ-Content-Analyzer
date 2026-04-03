@@ -134,9 +134,21 @@ export default function AlgorithmDetailsModal({ algorithm, isOpen, onClose }: Al
                 AI-Powered Insights
               </h3>
               <div className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 rounded-lg p-4 border border-purple-500/30">
-                <p className="text-purple-300 leading-relaxed">
-                  {algorithm.aiAnalysis}
-                </p>
+                <div className="text-purple-300 leading-relaxed max-h-64 overflow-y-auto">
+                  {algorithm.aiAnalysis.includes('{') || algorithm.aiAnalysis.includes('[') ? (
+                    <div className="space-y-2">
+                      <p className="text-purple-400 text-sm">AI Analysis Data:</p>
+                      <pre className="text-purple-200 text-xs bg-black/30 p-2 rounded overflow-x-auto">
+                        {algorithm.aiAnalysis.length > 500 
+                          ? algorithm.aiAnalysis.substring(0, 500) + '...' 
+                          : algorithm.aiAnalysis
+                        }
+                      </pre>
+                    </div>
+                  ) : (
+                    <p>{algorithm.aiAnalysis}</p>
+                  )}
+                </div>
               </div>
             </div>
           )}

@@ -345,15 +345,44 @@ class AlgorithmAnalyzer {
   private parseAIInsights(insights: string, platform: string): string[] {
     // Parse AI insights and extract platform-specific recommendations
     try {
+      // Try to parse as JSON first
       const parsed = JSON.parse(insights)
-      return parsed[platform]?.recommendations || []
-    } catch {
+      if (parsed[platform]?.recommendations) {
+        return parsed[platform].recommendations
+      }
+      
+      // If JSON doesn't work, try to extract from markdown/text
+      const lines = insights.split('\n').filter(line => line.trim())
+      const recommendations = lines
+        .filter(line => 
+          line.includes(platform) || 
+          line.includes('recommend') || 
+          line.includes('tip') ||
+          line.includes('should') ||
+          line.match(/^\d+\./) // Numbered lists
+        )
+        .slice(0, 4) // Take first 4 relevant lines
+        .map(line => line.replace(/^\d+\.\s*/, '').trim()) // Remove numbering
+      
+      if (recommendations.length > 0) {
+        return recommendations
+      }
+      
       // Fallback to manual parsing
       return [
         'Continue focusing on high-quality content',
         'Maintain consistent posting schedule',
         'Engage with your audience regularly',
         'Analyze performance metrics'
+      ]
+    } catch (error) {
+      console.error('Error parsing AI insights:', error)
+      // Return fallback recommendations
+      return [
+        'Focus on creating engaging content that resonates with your audience',
+        'Post consistently during peak engagement hours',
+        'Use relevant hashtags and trending topics',
+        'Monitor analytics to optimize your strategy'
       ]
     }
   }
