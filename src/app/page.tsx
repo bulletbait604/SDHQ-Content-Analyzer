@@ -140,7 +140,7 @@ export default function HomePage() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-            57HQ Content Analyzer
+            SDHQ Content Optimizer
           </h1>
           <p className="text-center text-gray-400 mb-8">
             AI-powered content optimization with algorithm research
@@ -172,27 +172,66 @@ export default function HomePage() {
           </TabsList>
 
           <TabsContent value="clip-analysis" className="mt-6">
-            <ClipAnalysis />
+            <div className="text-center py-16">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">Clip Analysis</h2>
+              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <div className="max-w-md mx-auto">
+                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="tag-generator" className="mt-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-green-400 mb-2">Tag Generator</h2>
-              <p className="text-gray-300">Generate optimized tags for your content</p>
+            <div className="text-center py-16">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">Tag Generator</h2>
+              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <div className="max-w-md mx-auto">
+                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </TabsContent>
 
           <TabsContent value="content-analysis" className="mt-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-green-400 mb-2">Content Analysis</h2>
-              <p className="text-gray-300">Analyze your content performance across platforms</p>
+            <div className="text-center py-16">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">Content Analysis</h2>
+              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <div className="max-w-md mx-auto">
+                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </TabsContent>
 
           <TabsContent value="algorithm-info" className="mt-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-green-400 mb-2">Algorithm Info</h2>
-              <p className="text-gray-300">Platform algorithm information and updates</p>
+            <div className="text-center py-16">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">Algorithm Info</h2>
+              <p className="text-gray-300 mb-8">Coming Soon</p>
+              <div className="max-w-md mx-auto">
+                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </TabsContent>
 

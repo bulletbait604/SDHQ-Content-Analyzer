@@ -1,5 +1,5 @@
 {
-  "name": "SDHQ Content Analyzer",
+  "name": "sdhq-content-optimizer",
   "version": "0.1.0",
   "private": true,
   "scripts": {

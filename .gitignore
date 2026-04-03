@@ -52,3 +52,6 @@ unins*.exe
 vcruntime*.dll
 vk_swiftshader.dll
 snapshot_blob.bin
+
+.vercel
+.env*.local
