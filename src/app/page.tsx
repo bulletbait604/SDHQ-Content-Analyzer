@@ -175,12 +175,7 @@ return (
                   className="bg-gray-600 hover:bg-gray-500 text-white"
                 >
                   <Settings className="w-4 h-4 mr-2" />
-                  {!hasPremium && (
-                    <span className="text-xs text-yellow-300">
-                      Free User - Please Subscribe To Bulletbait604 to Unlock Premium Features
-                    </span>
-                  )}
-                  {hasPremium && t('settings')}
+                  {t('settings')}
                 </Button>
               </>
             )}
@@ -203,6 +198,17 @@ return (
           </div>
         </div>
       </div>
+
+      {/* Subscription Message for Free Users */}
+      {user && !hasPremium && (
+        <div className="container mx-auto px-4 mb-4">
+          <div className="bg-yellow-900/20 border border-yellow-600/50 rounded-lg p-4 text-center">
+            <p className="text-yellow-300 text-sm font-medium">
+              Free User - Please Subscribe To Bulletbait604 to Unlock Premium Features
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
