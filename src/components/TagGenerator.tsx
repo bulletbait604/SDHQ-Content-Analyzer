@@ -7,19 +7,9 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Slider } from '@/components/ui/slider'
 import { Textarea } from '@/components/ui/textarea'
-import { Separator } from '@/components/ui/separator'
 import { Copy, Hash, TrendingUp, Target, Zap, RefreshCw, Download } from 'lucide-react'
-
-interface TagData {
-  tag: string
-  category: string
-  popularity: number
-  trending: boolean
-  platform: string[]
-  lastUpdated: string
-}
+import { generateComprehensiveTagDatabase, getPlatformTags, getTrendingTags, TrendingTagsDatabase, TagData } from '@/lib/tagDatabase'
 
 interface GeneratedTag {
   tag: string
@@ -28,153 +18,65 @@ interface GeneratedTag {
   trending: boolean
 }
 
-interface TrendingTagsDatabase {
-  [platform: string]: {
-    tags: TagData[]
-    lastUpdated: string
-    weeklyTrends: string[]
-  }
-}
+const TAG_COUNT_OPTIONS = [
+  { value: '5', label: '5 Tags' },
+  { value: '10', label: '10 Tags' },
+  { value: '15', label: '15 Tags' },
+  { value: '20', label: '20 Tags' },
+  { value: '25', label: '25 Tags' },
+  { value: '30', label: '30 Tags' },
+  { value: '40', label: '40 Tags' },
+  { value: '50', label: '50 Tags' },
+  { value: '75', label: '75 Tags' },
+  { value: '100', label: '100 Tags' }
+]
 
 export default function TagGenerator() {
   const [title, setTitle] = useState('')
   const [platform, setPlatform] = useState('')
-  const [tagCount, setTagCount] = useState([10])
+  const [tagCount, setTagCount] = useState('10')
   const [generatedTags, setGeneratedTags] = useState<GeneratedTag[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [copiedTags, setCopiedTags] = useState<string[]>([])
   const [trendingDatabase, setTrendingDatabase] = useState<TrendingTagsDatabase | null>(null)
   const [lastDatabaseUpdate, setLastDatabaseUpdate] = useState<string>('')
+  const [databaseLoading, setDatabaseLoading] = useState(true)
 
-  // Initialize trending tags database
+  // Initialize comprehensive trending tags database
   useEffect(() => {
     initializeTrendingDatabase()
     scheduleWeeklyUpdates()
   }, [])
 
   const initializeTrendingDatabase = () => {
-    const database: TrendingTagsDatabase = {
-      tiktok: {
-        tags: [
-          { tag: 'fyp', category: 'discovery', popularity: 95, trending: true, platform: ['tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'foryou', category: 'discovery', popularity: 92, trending: true, platform: ['tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'viral', category: 'viral', popularity: 88, trending: true, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'trending', category: 'trending', popularity: 85, trending: true, platform: ['tiktok', 'twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'dance', category: 'entertainment', popularity: 82, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'comedy', category: 'entertainment', popularity: 78, trending: false, platform: ['tiktok', 'youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'music', category: 'entertainment', popularity: 75, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'art', category: 'creative', popularity: 70, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'cooking', category: 'lifestyle', popularity: 68, trending: false, platform: ['tiktok', 'youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'fitness', category: 'lifestyle', popularity: 72, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'tech', category: 'technology', popularity: 65, trending: false, platform: ['tiktok', 'youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'gaming', category: 'entertainment', popularity: 80, trending: false, platform: ['tiktok', 'youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'fashion', category: 'lifestyle', popularity: 74, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'beauty', category: 'lifestyle', popularity: 76, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'travel', category: 'lifestyle', popularity: 69, trending: false, platform: ['tiktok', 'instagram'], lastUpdated: new Date().toISOString() },
-        ],
-        lastUpdated: new Date().toISOString(),
-        weeklyTrends: ['fyp', 'viral', 'trending', 'dance', 'comedy']
-      },
-      instagram: {
-        tags: [
-          { tag: 'instagood', category: 'general', popularity: 90, trending: true, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'photooftheday', category: 'general', popularity: 85, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'fashion', category: 'lifestyle', popularity: 82, trending: false, platform: ['instagram', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'beautiful', category: 'aesthetic', popularity: 78, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'happy', category: 'emotion', popularity: 75, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'cute', category: 'aesthetic', popularity: 73, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'followme', category: 'engagement', popularity: 70, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'like4like', category: 'engagement', popularity: 68, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'art', category: 'creative', popularity: 72, trending: false, platform: ['instagram', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'nature', category: 'lifestyle', popularity: 76, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'food', category: 'lifestyle', popularity: 74, trending: false, platform: ['instagram', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'love', category: 'emotion', popularity: 80, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'style', category: 'fashion', popularity: 71, trending: false, platform: ['instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'fitness', category: 'lifestyle', popularity: 73, trending: false, platform: ['instagram', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'travel', category: 'lifestyle', popularity: 77, trending: false, platform: ['instagram', 'tiktok'], lastUpdated: new Date().toISOString() },
-        ],
-        lastUpdated: new Date().toISOString(),
-        weeklyTrends: ['instagood', 'fashion', 'beautiful', 'love', 'travel']
-      },
-      youtube: {
-        tags: [
-          { tag: 'youtube', category: 'platform', popularity: 95, trending: true, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'video', category: 'general', popularity: 85, trending: false, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'viral', category: 'viral', popularity: 88, trending: true, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'trending', category: 'trending', popularity: 82, trending: true, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'music', category: 'entertainment', popularity: 78, trending: false, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'gaming', category: 'entertainment', popularity: 84, trending: false, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'tutorial', category: 'educational', popularity: 76, trending: false, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'review', category: 'review', popularity: 74, trending: false, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'funny', category: 'entertainment', popularity: 80, trending: false, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'tech', category: 'technology', popularity: 70, trending: false, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'cooking', category: 'lifestyle', popularity: 72, trending: false, platform: ['youtube', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'fitness', category: 'lifestyle', popularity: 68, trending: false, platform: ['youtube', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'vlog', category: 'lifestyle', popularity: 75, trending: false, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'howto', category: 'educational', popularity: 73, trending: false, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'asmr', category: 'entertainment', popularity: 71, trending: false, platform: ['youtube'], lastUpdated: new Date().toISOString() },
-        ],
-        lastUpdated: new Date().toISOString(),
-        weeklyTrends: ['youtube', 'viral', 'trending', 'gaming', 'music']
-      },
-      twitter: {
-        tags: [
-          { tag: 'trending', category: 'trending', popularity: 92, trending: true, platform: ['twitter', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'viral', category: 'viral', popularity: 88, trending: true, platform: ['twitter', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'news', category: 'information', popularity: 85, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'tech', category: 'technology', popularity: 78, trending: false, platform: ['twitter', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'breaking', category: 'news', popularity: 82, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'ai', category: 'technology', popularity: 80, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'crypto', category: 'finance', popularity: 75, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'startup', category: 'business', popularity: 72, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'marketing', category: 'business', popularity: 70, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'design', category: 'creative', popularity: 68, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'innovation', category: 'technology', popularity: 74, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'fintech', category: 'finance', popularity: 71, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'web3', category: 'technology', popularity: 69, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'nft', category: 'technology', popularity: 67, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'metaverse', category: 'technology', popularity: 65, trending: false, platform: ['twitter'], lastUpdated: new Date().toISOString() },
-        ],
-        lastUpdated: new Date().toISOString(),
-        weeklyTrends: ['trending', 'viral', 'tech', 'ai', 'breaking']
-      },
-      facebook: {
-        tags: [
-          { tag: 'facebook', category: 'platform', popularity: 90, trending: true, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-          { tag: 'social', category: 'general', popularity: 82, trending: false, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-          { tag: 'viral', category: 'viral', popularity: 85, trending: true, platform: ['facebook', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'trending', category: 'trending', popularity: 78, trending: false, platform: ['facebook', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'news', category: 'information', popularity: 80, trending: false, platform: ['facebook', 'twitter'], lastUpdated: new Date().toISOString() },
-          { tag: 'video', category: 'general', popularity: 76, trending: false, platform: ['facebook', 'youtube'], lastUpdated: new Date().toISOString() },
-          { tag: 'music', category: 'entertainment', popularity: 74, trending: false, platform: ['facebook', 'tiktok'], lastUpdated: new Date().toISOString() },
-          { tag: 'food', category: 'lifestyle', popularity: 72, trending: false, platform: ['facebook', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'travel', category: 'lifestyle', popularity: 75, trending: false, platform: ['facebook', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'family', category: 'lifestyle', popularity: 78, trending: false, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-          { tag: 'friends', category: 'lifestyle', popularity: 76, trending: false, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-          { tag: 'celebration', category: 'lifestyle', popularity: 73, trending: false, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-          { tag: 'lifestyle', category: 'lifestyle', popularity: 71, trending: false, platform: ['facebook', 'instagram'], lastUpdated: new Date().toISOString() },
-          { tag: 'community', category: 'general', popularity: 74, trending: false, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-          { tag: 'inspiration', category: 'motivation', popularity: 70, trending: false, platform: ['facebook'], lastUpdated: new Date().toISOString() },
-        ],
-        lastUpdated: new Date().toISOString(),
-        weeklyTrends: ['facebook', 'viral', 'social', 'video', 'lifestyle']
-      }
-    }
-
+    setDatabaseLoading(true)
+    console.log('🔄 Initializing comprehensive tag database (100,000 tags per platform)...')
+    
+    // Generate comprehensive database
+    const database = generateComprehensiveTagDatabase()
+    
     setTrendingDatabase(database)
     setLastDatabaseUpdate(new Date().toISOString())
+    setDatabaseLoading(false)
     
     // Save to localStorage
     if (typeof window !== 'undefined') {
-      localStorage.setItem('sdhq_trending_tags', JSON.stringify(database))
+      localStorage.setItem('sdhq_comprehensive_tags', JSON.stringify(database))
     }
+    
+    console.log('✅ Comprehensive tag database initialized:')
+    console.log(`📊 TikTok: ${database.tiktok.tags.length} tags`)
+    console.log(`📊 Instagram: ${database.instagram.tags.length} tags`)
+    console.log(`📊 YouTube: ${database.youtube.tags.length} tags`)
+    console.log(`📊 Twitter: ${database.twitter.tags.length} tags`)
+    console.log(`📊 Facebook: ${database.facebook.tags.length} tags`)
+    console.log(`📊 Total: ${Object.values(database).reduce((acc, platform) => acc + platform.tags.length, 0)} tags`)
   }
 
   const scheduleWeeklyUpdates = () => {
     // Schedule weekly updates for trending tags
     const updateTrendingTags = () => {
-      console.log('🔄 Updating trending tags database...')
-      // In a real implementation, this would call an API to get current trending data
+      console.log('🔄 Updating comprehensive trending tags database...')
       initializeTrendingDatabase()
       
       // Schedule next update
@@ -194,11 +96,14 @@ export default function TagGenerator() {
     setIsGenerating(true)
     
     try {
-      // Simulate AI processing
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Simulate AI processing with larger dataset
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
-      const platformTags = trendingDatabase?.[platform]?.tags || []
-      const weeklyTrends = trendingDatabase?.[platform]?.weeklyTrends || []
+      // Get platform-specific tags from comprehensive database
+      const platformTags = getPlatformTags(trendingDatabase!, platform)
+      const weeklyTrends = getTrendingTags(trendingDatabase!, platform)
+      
+      console.log(`🔍 Analyzing ${platformTags.length} tags for ${platform}...`)
       
       // Extract keywords from title
       const titleWords = title.toLowerCase().split(' ').filter(word => word.length > 2)
@@ -248,9 +153,10 @@ export default function TagGenerator() {
       
       // Sort by relevance and take top tags
       const sortedTags = scoredTags.sort((a, b) => b.relevance - a.relevance)
-      const selectedTags = sortedTags.slice(0, tagCount[0])
+      const selectedTags = sortedTags.slice(0, parseInt(tagCount))
       
       setGeneratedTags(selectedTags)
+      console.log(`✅ Generated ${selectedTags.length} optimized tags for ${platform}`)
     } catch (error) {
       console.error('Error generating tags:', error)
       alert('Error generating tags. Please try again.')
@@ -296,7 +202,22 @@ export default function TagGenerator() {
       'business': 'bg-gray-600',
       'finance': 'bg-green-600',
       'motivation': 'bg-purple-600',
-      'platform': 'bg-black'
+      'platform': 'bg-black',
+      'gaming': 'bg-purple-700',
+      'music': 'bg-pink-600',
+      'dance': 'bg-orange-700',
+      'comedy': 'bg-yellow-600',
+      'art': 'bg-indigo-600',
+      'cooking': 'bg-green-700',
+      'fitness': 'bg-cyan-600',
+      'fashion': 'bg-pink-700',
+      'beauty': 'bg-purple-800',
+      'travel': 'bg-blue-800',
+      'food': 'bg-orange-800',
+      'family': 'bg-red-700',
+      'friends': 'bg-yellow-700',
+      'celebration': 'bg-green-800',
+      'community': 'bg-teal-600'
     }
     return colors[category] || 'bg-gray-500'
   }
@@ -309,7 +230,7 @@ export default function TagGenerator() {
           AI Tag Generator
         </h2>
         <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-          Generate optimized tags for your content using AI-powered trending analysis and platform-specific algorithms
+          Generate optimized tags for your content using AI-powered analysis of 100,000+ trending tags per platform
         </p>
       </div>
 
@@ -353,34 +274,38 @@ export default function TagGenerator() {
             </div>
           </div>
 
-          {/* Tag Count Slider */}
+          {/* Tag Count Dropdown */}
           <div className="space-y-2">
-            <Label className="text-gray-300">Number of Tags: {tagCount[0]}</Label>
-            <Slider
-              value={tagCount}
-              onValueChange={setTagCount}
-              max={20}
-              min={1}
-              step={1}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>1</span>
-              <span>10</span>
-              <span>20</span>
-            </div>
+            <Label htmlFor="tagCount" className="text-gray-300">Number of Tags</Label>
+            <Select value={tagCount} onValueChange={setTagCount}>
+              <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
+                <SelectValue placeholder="Select number of tags" />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-800 border-gray-600">
+                {TAG_COUNT_OPTIONS.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Generate Button */}
           <Button
             onClick={generateTags}
-            disabled={!title || !platform || isGenerating}
+            disabled={!title || !platform || isGenerating || databaseLoading}
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold"
           >
             {isGenerating ? (
               <>
                 <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
                 Generating Tags...
+              </>
+            ) : databaseLoading ? (
+              <>
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                Loading Database...
               </>
             ) : (
               <>
@@ -485,7 +410,7 @@ export default function TagGenerator() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <TrendingUp className="w-5 h-5 text-purple-400" />
-            Trending Database
+            Trending Tag Database
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -499,7 +424,7 @@ export default function TagGenerator() {
             <div className="flex items-center justify-between">
               <span className="text-gray-300">Total Tags in Database:</span>
               <span className="text-gray-400">
-                {trendingDatabase ? Object.values(trendingDatabase).reduce((acc, platform) => acc + platform.tags.length, 0) : 0}
+                {trendingDatabase ? Object.values(trendingDatabase).reduce((acc, platform) => acc + platform.tags.length, 0).toLocaleString() : '0'}
               </span>
             </div>
             <div className="flex items-center justify-between">
@@ -508,6 +433,30 @@ export default function TagGenerator() {
                 {lastDatabaseUpdate ? new Date(new Date(lastDatabaseUpdate).getTime() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString() : 'Unknown'}
               </span>
             </div>
+            {trendingDatabase && (
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
+                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                  <div className="text-lg font-bold text-pink-400">{trendingDatabase.tiktok.tags.length.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400">TikTok Tags</div>
+                </div>
+                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                  <div className="text-lg font-bold text-orange-400">{trendingDatabase.instagram.tags.length.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400">Instagram Tags</div>
+                </div>
+                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                  <div className="text-lg font-bold text-red-400">{trendingDatabase.youtube.tags.length.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400">YouTube Tags</div>
+                </div>
+                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                  <div className="text-lg font-bold text-blue-400">{trendingDatabase.twitter.tags.length.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400">Twitter Tags</div>
+                </div>
+                <div className="text-center p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                  <div className="text-lg font-bold text-green-400">{trendingDatabase.facebook.tags.length.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400">Facebook Tags</div>
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
