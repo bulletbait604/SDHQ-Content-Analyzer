@@ -40,6 +40,7 @@ export default function HomePage() {
   const [language, setLanguage] = useState<Language>('en')
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [mounted, setMounted] = useState(false)
+  const [activeTab, setActiveTab] = useState('algorithm-info')
 
   // Translation helper
   const t = (key: keyof typeof translations.en) => translations[language][key] || translations.en[key]
@@ -162,8 +163,7 @@ return (
                 </div>
                 <Button
                   onClick={() => {
-                    // Navigate to settings tab
-                    window.location.hash = 'settings'
+                    setActiveTab('settings')
                   }}
                   className="bg-gray-600 hover:bg-gray-500 text-white"
                 >
@@ -209,7 +209,7 @@ return (
           )}
         </div>
 
-        <Tabs defaultValue="algorithm-info" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
