@@ -14,6 +14,7 @@ import { Footer } from '@/components/Footer'
 import TagGenerator from '@/components/TagGenerator'
 import { translations, Language } from '@/lib/translations'
 import SubscribersManager from '@/lib/subscribers'
+import { testVerification, clearVerifications, getPendingVerifications } from '@/lib/subscriptionVerifier'
 
 import { 
   Upload, 
@@ -403,16 +404,50 @@ export default function HomePage() {
     }
   }
 
-  const handleUserChange = (newUser: any) => {
-    setUser(newUser)
-    if (newUser) {
-      // Check premium status when user logs in
-      const subscribersManager = SubscribersManager.getInstance()
-      const isSub = subscribersManager.isSubscriber(newUser.username)
-      setHasPremium(isSub)
+  const handleUserChange = (userData: any) => {
+    setUser(userData)
+    if (userData) {
+      setHasPremium(userData.isSubscribed || false)
+      console.log('👤 User logged in:', userData.username, 'Premium:', userData.isSubscribed)
     } else {
       setHasPremium(false)
+      console.log('👤 User logged out')
     }
+  }
+
+  // Testing functions for subscription verification
+  const handleTestVerification = () => {
+    if (user) {
+      console.log('🧪 Testing subscription verification for:', user.username)
+      const result = testVerification(user.username, true) // Test as subscriber
+      if (result && result.success) {
+        console.log('✅ Test verification successful:', result)
+      } else {
+        console.log('❌ Test verification failed:', result?.error || 'Unknown error')
+      }
+    }
+  }
+
+  const handleTestNonSubscriber = () => {
+    if (user) {
+      console.log('🧪 Testing non-subscriber verification for:', user.username)
+      const result = testVerification(user.username, false) // Test as non-subscriber
+      if (result && result.success) {
+        console.log('✅ Test verification successful:', result)
+      } else {
+        console.log('❌ Test verification failed:', result?.error || 'Unknown error')
+      }
+    }
+  }
+
+  const handleClearVerifications = () => {
+    clearVerifications()
+    console.log('🗑️ All verifications cleared')
+  }
+
+  const handleShowPending = () => {
+    const pending = getPendingVerifications()
+    console.log('📋 Pending verifications:', pending)
   }
 
   const handleSelectAlgorithm = (algorithm: any) => {
@@ -540,6 +575,33 @@ return (
           {!user && (
             <div className="text-center mt-8">
               <KickAuth onUserChange={handleUserChange} />
+            </div>
+          )}
+
+          {/* Testing Section for Development */}
+          {user && process.env.NODE_ENV === 'development' && (
+            <div className="text-center mt-4">
+              <Card className="bg-gray-800 border border-gray-600">
+                <CardHeader>
+                  <CardTitle className="text-sm text-gray-300">Testing Tools (Development Only)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-2 justify-center flex-wrap">
+                    <Button size="sm" variant="outline" onClick={handleTestVerification}>
+                      Test Subscriber
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={handleTestNonSubscriber}>
+                      Test Non-Subscriber
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={handleShowPending}>
+                      Show Pending
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={handleClearVerifications}>
+                      Clear All
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>

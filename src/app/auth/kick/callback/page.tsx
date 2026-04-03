@@ -7,14 +7,20 @@ export default function KickCallback() {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     const error = urlParams.get('error')
+    const state = urlParams.get('state')
 
     // Get the current domain dynamically
     const mainAppUrl = `${window.location.protocol}//${window.location.host}`
 
     if (code) {
-      // Store the auth code in localStorage
+      // Store the auth code and state for the verification system
       localStorage.setItem('kickAuthCode', code)
-      window.location.href = `${mainAppUrl}?auth=success&code=${code}`
+      if (state) {
+        localStorage.setItem('kickOAuthState', state)
+      }
+      
+      // Redirect to main app with auth parameters
+      window.location.href = `${mainAppUrl}?auth=kick_oauth&code=${code}&state=${state || ''}`
     } else if (error) {
       window.location.href = `${mainAppUrl}?auth=error&message=${encodeURIComponent(error)}`
     } else {
@@ -26,8 +32,8 @@ export default function KickCallback() {
     <div className="min-h-screen bg-black text-white flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-cyan-400">Processing authentication...</p>
-        <p className="text-cyan-300 text-sm mt-2">You will be redirected shortly.</p>
+        <p className="text-cyan-400">Processing Kick authentication...</p>
+        <p className="text-cyan-300 text-sm mt-2">Setting up your verification system.</p>
       </div>
     </div>
   )

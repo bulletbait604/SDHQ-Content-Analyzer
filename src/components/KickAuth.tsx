@@ -11,6 +11,9 @@ interface KickUser {
   username: string
   display_name: string
   profile_image_url: string
+  isSubscribed?: boolean
+  subscriptionVerified?: boolean
+  lastSubscriptionCheck?: string
 }
 
 interface KickAuthProps {
@@ -21,11 +24,92 @@ export function KickAuth({ onUserChange }: KickAuthProps) {
   const [user, setUser] = useState<KickUser | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(false)
+  const [verificationCode, setVerificationCode] = useState<string | null>(null)
 
   const kickOAuth = new KickOAuth(
     process.env.NEXT_PUBLIC_KICK_CLIENT_ID || '',
     process.env.NEXT_PUBLIC_KICK_CLIENT_SECRET || ''
   )
+
+  // Generate verification code for subscription check
+  const generateVerificationCode = () => {
+    const code = `VERIFY-${Math.random().toString(36).substring(2, 10).toUpperCase()}`
+    setVerificationCode(code)
+    return code
+  }
+
+  // Check subscription status (simulated - in production this would connect to Kick chat)
+  const checkSubscription = async () => {
+    if (!user) return
+    
+    setIsCheckingSubscription(true)
+    try {
+      // Generate verification code
+      const code = generateVerificationCode()
+      
+      // Store verification request
+      const verificationRequest = {
+        username: user.username,
+        code: code,
+        timestamp: new Date().toISOString(),
+        status: 'pending'
+      }
+      
+      // Store in localStorage (in production, this would be in a database)
+      const pendingVerifications = JSON.parse(localStorage.getItem('pendingVerifications') || '[]')
+      pendingVerifications.push(verificationRequest)
+      localStorage.setItem('pendingVerifications', JSON.stringify(pendingVerifications))
+      
+      console.log(`🔍 Generated verification code for @${user.username}: ${code}`)
+      console.log('📝 Instructions: Type this code in Bulletbait604\'s Kick chat to verify subscription')
+      
+    } catch (error) {
+      console.error('Error checking subscription:', error)
+      setError('Failed to check subscription status')
+    } finally {
+      setIsCheckingSubscription(false)
+    }
+  }
+
+  // Simulate verification completion (in production, this would be triggered by chat listener)
+  const simulateVerification = (isSubscribed: boolean) => {
+    if (!user) return
+    
+    const updatedUser = {
+      ...user,
+      isSubscribed,
+      subscriptionVerified: true,
+      lastSubscriptionCheck: new Date().toISOString()
+    }
+    
+    setUser(updatedUser)
+    onUserChange?.(updatedUser)
+    setVerificationCode(null)
+    
+    // Clear from pending verifications
+    const pendingVerifications = JSON.parse(localStorage.getItem('pendingVerifications') || '[]')
+    const filtered = pendingVerifications.filter((v: any) => v.username !== user.username)
+    localStorage.setItem('pendingVerifications', JSON.stringify(filtered))
+    
+    console.log(`✅ Subscription verified for @${user.username}: ${isSubscribed ? 'SUBSCRIBED' : 'NOT SUBSCRIBED'}`)
+  }
+
+  // Check for pending verifications (simulation)
+  useEffect(() => {
+    if (!user) return
+    
+    const interval = setInterval(() => {
+      const pendingVerifications = JSON.parse(localStorage.getItem('pendingVerifications') || '[]')
+      const userVerification = pendingVerifications.find((v: any) => v.username === user.username)
+      
+      if (userVerification && userVerification.status === 'verified') {
+        simulateVerification(userVerification.isSubscribed || false)
+      }
+    }, 5000) // Check every 5 seconds
+    
+    return () => clearInterval(interval)
+  }, [user])
 
   const handleLogin = async () => {
     setIsLoading(true)
@@ -196,10 +280,88 @@ export function KickAuth({ onUserChange }: KickAuthProps) {
                 className="w-12 h-12 rounded-full"
               />
             </div>
-            <div>
+            <div className="flex-1">
               <div className="text-cyan-300 text-sm font-medium">Logged in as</div>
               <div className="text-white font-semibold">{user.display_name}</div>
+              <div className="flex items-center gap-2 mt-1">
+                {user.subscriptionVerified ? (
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    user.isSubscribed 
+                      ? 'bg-green-500 text-white' 
+                      : 'bg-red-500 text-white'
+                  }`}>
+                    {user.isSubscribed ? '✓ Subscriber' : '✗ Not Subscribed'}
+                  </span>
+                ) : (
+                  <span className="text-xs px-2 py-1 rounded bg-yellow-500 text-black">
+                    Subscription Unknown
+                  </span>
+                )}
+                {user.lastSubscriptionCheck && (
+                  <span className="text-xs text-gray-400">
+                    Checked: {new Date(user.lastSubscriptionCheck).toLocaleDateString()}
+                  </span>
+                )}
+              </div>
             </div>
+          </div>
+
+          {/* Subscription verification section */}
+          <div className="mt-4 pt-4 border-t border-gray-700">
+            {verificationCode ? (
+              <div className="space-y-3">
+                <div className="text-center">
+                  <div className="text-sm text-gray-300 mb-2">
+                    Type this code in <strong>Bulletbait604's Kick chat</strong> to verify subscription:
+                  </div>
+                  <div className="bg-gray-800 px-4 py-2 rounded border border-cyan-500">
+                    <code className="text-cyan-400 font-mono text-lg">{verificationCode}</code>
+                  </div>
+                </div>
+                <div className="flex gap-2 justify-center">
+                  <Button
+                    onClick={() => window.open('https://kick.com/bulletbait604', '_blank')}
+                    size="sm"
+                    variant="outline"
+                    className="text-xs"
+                  >
+                    Open Kick Chat
+                  </Button>
+                  <Button
+                    onClick={checkSubscription}
+                    disabled={isCheckingSubscription}
+                    size="sm"
+                    className="text-xs bg-cyan-500 text-black hover:bg-cyan-400"
+                  >
+                    {isCheckingSubscription ? 'Checking...' : 'Check Again'}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                {!user.subscriptionVerified && (
+                  <Button
+                    onClick={checkSubscription}
+                    disabled={isCheckingSubscription}
+                    size="sm"
+                    className="bg-cyan-500 text-black hover:bg-cyan-400"
+                  >
+                    {isCheckingSubscription ? 'Checking...' : 'Verify Subscription'}
+                  </Button>
+                )}
+                {user.subscriptionVerified && (
+                  <Button
+                    onClick={checkSubscription}
+                    disabled={isCheckingSubscription}
+                    size="sm"
+                    variant="outline"
+                    className="text-xs"
+                  >
+                    {isCheckingSubscription ? 'Checking...' : 'Recheck Subscription'}
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
