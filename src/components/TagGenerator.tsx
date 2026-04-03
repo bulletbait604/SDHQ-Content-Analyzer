@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Hash, TrendingUp, Target, Zap, RefreshCw, Download } from 'lucide-react'
 import { getPlatformTags, getTrendingTags, TagData, trendingTagsDatabase } from '@/data/trendingTags'
+import { generateTagsWithCustomAlgorithm, CustomTagAlgorithm, platformAlgorithms } from '@/lib/tagAlgorithm'
 
 interface GeneratedTag {
   tag: string
@@ -64,67 +65,46 @@ export default function TagGenerator() {
     setIsGenerating(true)
     
     try {
-      // Simulate AI processing
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Simulate AI processing time for our algorithm
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
       // Get platform-specific tags from static database
       const platformTags = getPlatformTags(platform)
-      const weeklyTrends = getTrendingTags(platform)
       
-      console.log(`🔍 Analyzing ${platformTags.length} tags for ${platform}...`)
+      console.log(`🧠 Running custom algorithm for ${platform}...`)
+      console.log(`� Analyzing ${platformTags.length} tags with title: "${title}"`)
       
-      // Extract keywords from title
-      const titleWords = title.toLowerCase().split(' ').filter(word => word.length > 2)
+      // Get algorithm info for this platform
+      const algorithmInfo = platformAlgorithms[platform]
+      console.log(`🔧 Using ${algorithmInfo.name}`)
+      console.log(`📝 ${algorithmInfo.description}`)
       
-      // Calculate relevance scores
-      const scoredTags: GeneratedTag[] = platformTags.map(tagData => {
-        let relevance = tagData.popularity
-        
-        // Boost relevance for trending tags
-        if (tagData.trending) {
-          relevance += 15
-        }
-        
-        // Boost relevance for weekly trends
-        if (weeklyTrends.includes(tagData.tag)) {
-          relevance += 10
-        }
-        
-        // Boost relevance for title matches
-        const titleMatch = titleWords.some(word => 
-          tagData.tag.includes(word) || word.includes(tagData.tag)
-        )
-        if (titleMatch) {
-          relevance += 20
-        }
-        
-        // Platform-specific logic
-        if (platform === 'tiktok' && tagData.category === 'discovery') {
-          relevance += 10
-        } else if (platform === 'instagram' && tagData.category === 'aesthetic') {
-          relevance += 10
-        } else if (platform === 'youtube' && tagData.category === 'educational') {
-          relevance += 10
-        } else if (platform === 'twitter' && tagData.category === 'news') {
-          relevance += 10
-        } else if (platform === 'facebook' && tagData.category === 'community') {
-          relevance += 10
-        }
-        
-        return {
-          tag: tagData.tag,
-          relevance: Math.min(relevance, 100),
-          category: tagData.category,
-          trending: tagData.trending
-        }
-      })
+      // Use our custom algorithm to select best tags
+      const selectedTags = generateTagsWithCustomAlgorithm(
+        platformTags,
+        title,
+        platform,
+        parseInt(tagCount)
+      )
       
-      // Sort by relevance and take top tags
-      const sortedTags = scoredTags.sort((a, b) => b.relevance - a.relevance)
-      const selectedTags = sortedTags.slice(0, parseInt(tagCount))
+      // Convert to GeneratedTag format
+      const generatedTags = selectedTags.map(tag => ({
+        tag: tag.tag,
+        relevance: 100, // We don't show relevance anymore, but keep for compatibility
+        category: tag.category,
+        trending: tag.trending
+      }))
       
-      setGeneratedTags(selectedTags)
-      console.log(`✅ Generated ${selectedTags.length} optimized tags for ${platform}`)
+      setGeneratedTags(generatedTags)
+      console.log(`✅ Generated ${generatedTags.length} optimized tags using custom algorithm`)
+      
+      // Log algorithm details
+      const algorithm = new CustomTagAlgorithm(platform)
+      const info = algorithm.getAlgorithmInfo()
+      console.log(`🎯 Algorithm weights:`, info.categoryWeights)
+      console.log(`🚀 Trending boost: ${info.trendingBoost}`)
+      console.log(`📈 Title match weight: ${info.titleMatchWeight}`)
+      
     } catch (error) {
       console.error('Error generating tags:', error)
       alert('Error generating tags. Please try again.')
@@ -319,17 +299,14 @@ export default function TagGenerator() {
                       )}
                       <span className="text-white font-medium">#{tag.tag}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400">{tag.relevance}%</span>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => copyTags(tag.tag)}
-                        className="text-gray-400 hover:text-white"
-                      >
-                        <Copy className="w-3 h-3" />
-                      </Button>
-                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => copyTags(tag.tag)}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <Copy className="w-3 h-3" />
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -367,6 +344,47 @@ export default function TagGenerator() {
           </CardContent>
         </Card>
       )}
+
+      {/* Algorithm Info */}
+      <Card className="bg-gradient-to-br from-gray-900 via-black to-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Zap className="w-5 h-5 text-yellow-400" />
+            Custom Algorithm
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="text-center p-4 bg-gray-800/30 rounded-lg border border-gray-600">
+              <div className="text-lg font-bold text-blue-400 mb-2">
+                {platform ? platformAlgorithms[platform]?.name || 'Select a platform' : 'Select a platform'}
+              </div>
+              <div className="text-sm text-gray-400 mb-3">
+                {platform ? platformAlgorithms[platform]?.description || '' : ''}
+              </div>
+              {platform && (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                  <div className="text-center p-2 bg-gray-700/50 rounded">
+                    <div className="text-green-400 font-semibold">Trending Boost</div>
+                    <div className="text-gray-300">+{platformAlgorithms[platform].trendingBoost} points</div>
+                  </div>
+                  <div className="text-center p-2 bg-gray-700/50 rounded">
+                    <div className="text-blue-400 font-semibold">Title Match</div>
+                    <div className="text-gray-300">+{platformAlgorithms[platform].titleMatchWeight} points</div>
+                  </div>
+                  <div className="text-center p-2 bg-gray-700/50 rounded">
+                    <div className="text-purple-400 font-semibold">Length Pref</div>
+                    <div className="text-gray-300">{platformAlgorithms[platform].lengthPreference}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="text-center text-xs text-gray-500">
+              🧠 Our custom algorithm analyzes your title, platform trends, and category weights to select the most relevant tags
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Database Info */}
       <Card className="bg-gradient-to-br from-gray-900 via-black to-gray-800 border-gray-700">
