@@ -207,8 +207,15 @@ return (
                       </>
                     )}
                   </div>
-                  <p className="text-gray-400 text-sm">@{user.username}</p>
                 </div>
+              </>
+            )}
+          </div>
+
+          {/* Right side - Settings and Logout when logged in */}
+          <div className="flex items-center gap-2">
+            {user && (
+              <>
                 <Button
                   onClick={() => {
                     setActiveTab('settings')
@@ -218,23 +225,17 @@ return (
                   <Settings className="w-4 h-4 mr-2" />
                   {t('settings')}
                 </Button>
+                <Button
+                  onClick={() => {
+                    localStorage.removeItem('kickUser')
+                    setUser(null)
+                    setHasPremium(false)
+                  }}
+                  className="bg-red-600 hover:bg-red-500 text-white"
+                >
+                  Logout
+                </Button>
               </>
-            )}
-          </div>
-
-          {/* Right side - Logout when logged in */}
-          <div className="flex items-center">
-            {user && (
-              <Button
-                onClick={() => {
-                  localStorage.removeItem('kickUser')
-                  setUser(null)
-                  setHasPremium(false)
-                }}
-                className="bg-red-600 hover:bg-red-500 text-white"
-              >
-                Logout
-              </Button>
             )}
           </div>
         </div>
