@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, SyntheticEvent } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -256,9 +256,16 @@ return (
         <div className="mb-8">
           <div className="flex flex-col items-center justify-center mb-8">
             <img 
-              src="https://ibb.co/hRQL4Wy2" 
+              src="https://i.ibb.co/rG8Fz6m5/SDHQ-12-3-2023.png" 
               alt="SDHQ Content Optimizer"
               className="h-16 w-auto mb-4"
+              onLoad={() => console.log('✅ Logo loaded successfully')}
+              onError={(e: SyntheticEvent<HTMLImageElement>) => {
+                console.log('❌ Logo failed to load:', e)
+                // Fallback to a placeholder if image fails
+                const target = e.target as HTMLImageElement
+                target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236633'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='14' fill='white' text-anchor='middle'%3ESDHQ%3C/text%3E%3C/svg%3E"
+              }}
             />
             <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
               {t('appTitle')}
