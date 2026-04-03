@@ -23,7 +23,7 @@ export interface TrendingTagsDatabase {
   facebook: PlatformTags
 }
 
-// Generate comprehensive tag database
+// Generate comprehensive tag database with optimized performance
 export function generateComprehensiveTagDatabase(): TrendingTagsDatabase {
   const categories = [
     'discovery', 'viral', 'trending', 'entertainment', 'creative', 'lifestyle', 
@@ -259,7 +259,7 @@ export function generateComprehensiveTagDatabase(): TrendingTagsDatabase {
     return variations
   }
 
-  // Generate comprehensive database for each platform
+  // Generate comprehensive database for each platform - OPTIMIZED VERSION
   const database: TrendingTagsDatabase = {
     tiktok: {
       tags: [],
@@ -288,27 +288,34 @@ export function generateComprehensiveTagDatabase(): TrendingTagsDatabase {
     }
   }
 
-  // Generate 100,000 tags for each platform
+  // Generate optimized database with fewer tags for performance
   Object.keys(database).forEach(platform => {
     const platformTags: TagData[] = []
     
-    categories.forEach(category => {
+    // Limit categories for better performance
+    const limitedCategories = categories.slice(0, 20) // Use only first 20 categories
+    
+    limitedCategories.forEach(category => {
       const categoryTags = generateTagsForCategory(category, platform)
       platformTags.push(...categoryTags)
     })
     
-    // Add more variations to reach 100,000
-    while (platformTags.length < 100000) {
-      const randomCategory = categories[Math.floor(Math.random() * categories.length)]
+    // Add more variations to reach 10,000 (reduced from 100,000 for performance)
+    const targetSize = 10000
+    while (platformTags.length < targetSize) {
+      const randomCategory = limitedCategories[Math.floor(Math.random() * limitedCategories.length)]
       const baseTags = getBaseTagsForCategory(randomCategory)
       const randomBaseTag = baseTags[Math.floor(Math.random() * baseTags.length)]
       const variations = generateTagVariations(randomBaseTag, randomCategory, platform)
       platformTags.push(...variations)
+      
+      // Prevent infinite loop
+      if (platformTags.length > targetSize * 1.5) break
     }
     
-    // Sort by popularity and take top 100,000
+    // Sort by popularity and take top tags
     platformTags.sort((a, b) => b.popularity - a.popularity)
-    database[platform as keyof TrendingTagsDatabase].tags = platformTags.slice(0, 100000)
+    database[platform as keyof TrendingTagsDatabase].tags = platformTags.slice(0, targetSize)
     
     // Set weekly trends (top 50)
     database[platform as keyof TrendingTagsDatabase].weeklyTrends = 

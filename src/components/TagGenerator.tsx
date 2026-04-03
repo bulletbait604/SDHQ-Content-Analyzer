@@ -50,27 +50,40 @@ export default function TagGenerator() {
 
   const initializeTrendingDatabase = () => {
     setDatabaseLoading(true)
-    console.log('🔄 Initializing comprehensive tag database (100,000 tags per platform)...')
-    
-    // Generate comprehensive database
-    const database = generateComprehensiveTagDatabase()
-    
-    setTrendingDatabase(database)
-    setLastDatabaseUpdate(new Date().toISOString())
-    setDatabaseLoading(false)
-    
-    // Save to localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('sdhq_comprehensive_tags', JSON.stringify(database))
+    try {
+      console.log('🔄 Initializing optimized tag database (10,000 tags per platform)...')
+      
+      // Generate optimized database
+      const database = generateComprehensiveTagDatabase()
+      
+      setTrendingDatabase(database)
+      setLastDatabaseUpdate(new Date().toISOString())
+      
+      // Save to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('sdhq_comprehensive_tags', JSON.stringify(database))
+      }
+      
+      console.log('✅ Optimized tag database initialized:')
+      console.log(`📊 TikTok: ${database.tiktok.tags.length} tags`)
+      console.log(`📊 Instagram: ${database.instagram.tags.length} tags`)
+      console.log(`📊 YouTube: ${database.youtube.tags.length} tags`)
+      console.log(`📊 Twitter: ${database.twitter.tags.length} tags`)
+      console.log(`📊 Facebook: ${database.facebook.tags.length} tags`)
+      console.log(`📊 Total: ${Object.values(database).reduce((acc, platform) => acc + platform.tags.length, 0)} tags`)
+    } catch (error) {
+      console.error('Error initializing tag database:', error)
+      // Set fallback empty database
+      setTrendingDatabase({
+        tiktok: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
+        instagram: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
+        youtube: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
+        twitter: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] },
+        facebook: { tags: [], lastUpdated: new Date().toISOString(), weeklyTrends: [] }
+      })
+    } finally {
+      setDatabaseLoading(false)
     }
-    
-    console.log('✅ Comprehensive tag database initialized:')
-    console.log(`📊 TikTok: ${database.tiktok.tags.length} tags`)
-    console.log(`📊 Instagram: ${database.instagram.tags.length} tags`)
-    console.log(`📊 YouTube: ${database.youtube.tags.length} tags`)
-    console.log(`📊 Twitter: ${database.twitter.tags.length} tags`)
-    console.log(`📊 Facebook: ${database.facebook.tags.length} tags`)
-    console.log(`📊 Total: ${Object.values(database).reduce((acc, platform) => acc + platform.tags.length, 0)} tags`)
   }
 
   const scheduleWeeklyUpdates = () => {
@@ -230,7 +243,7 @@ export default function TagGenerator() {
           AI Tag Generator
         </h2>
         <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-          Generate optimized tags for your content using AI-powered analysis of 100,000+ trending tags per platform
+          Generate optimized tags for your content using AI-powered analysis of 10,000+ trending tags per platform
         </p>
       </div>
 
