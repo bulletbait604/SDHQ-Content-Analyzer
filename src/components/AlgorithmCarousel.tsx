@@ -58,25 +58,34 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                   <div className="flex items-center gap-4">
                     <div 
                       className="w-16 h-16 rounded-xl flex items-center justify-center p-3"
-                      style={{ backgroundColor: `${algorithm.primaryColor}20` }}
+                      style={{ 
+                        background: `linear-gradient(135deg, ${algorithm.primaryColor}20, ${algorithm.secondaryColor}20)`,
+                        border: `2px solid ${algorithm.primaryColor}`
+                      }}
                     >
                       <img 
                         src={algorithm.logo} 
                         alt={algorithm.name}
                         className="w-full h-full object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='white'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='8'%3E${algorithm.name.charAt(0)}%3C/text%3E%3C/svg%3E`
+                        }}
                       />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <h3 className="text-2xl font-bold text-white mb-1">{algorithm.name}</h3>
-                      <Badge 
-                        className="text-xs"
-                        style={{ 
-                          backgroundColor: algorithm.primaryColor,
-                          color: '#ffffff'
-                        }}
-                      >
-                        Algorithm
-                      </Badge>
+                      <div className="text-sm text-gray-400 mb-2">
+                        Algorithm Type: {algorithm.platform === 'tiktok' ? 'For You Page' : 
+                                       algorithm.platform === 'instagram' ? 'Feed & Stories' :
+                                       algorithm.platform === 'youtube-shorts' ? 'Shorts Shelf' :
+                                       algorithm.platform === 'youtube-16-9' ? 'Recommendation Engine' :
+                                       algorithm.platform === 'facebook-reels' ? 'Reels Feed' :
+                                       algorithm.platform === 'twitter' ? 'Timeline' : 'Smart Feed'}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Last Updated: {new Date(algorithm.lastUpdated).toLocaleDateString()}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -84,6 +93,24 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                     <span className="text-sm text-gray-400">
                       Updated {new Date(algorithm.lastUpdated).toLocaleDateString()}
                     </span>
+                  </div>
+                </div>
+
+                {/* Algorithm Overview */}
+                <div className="bg-gray-800/50 rounded-lg p-4 mb-6 border border-gray-600">
+                  <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-blue-400" />
+                    How It Works
+                  </h4>
+                  <div className="space-y-2">
+                    {algorithm.howItWorks.slice(0, 3).map((point, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0 mt-0.5">
+                          {index + 1}
+                        </div>
+                        <p className="text-gray-300 text-sm leading-relaxed">{point}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
 

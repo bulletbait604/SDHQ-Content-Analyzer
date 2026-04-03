@@ -316,6 +316,24 @@ export default function HomePage() {
       
       // Update algorithms with AI on component mount
       algorithmAnalyzer.updateAlgorithmsWithAI()
+      
+      // Schedule weekly AI updates
+      const scheduleWeeklyUpdate = () => {
+        const now = new Date()
+        const nextUpdate = new Date(now)
+        nextUpdate.setDate(now.getDate() + 7) // Next week
+        
+        console.log('📅 Next AI update scheduled for:', nextUpdate.toLocaleDateString())
+        
+        setTimeout(() => {
+          console.log('🤖 Running weekly AI algorithm update...')
+          algorithmAnalyzer.updateAlgorithmsWithAI()
+          scheduleWeeklyUpdate() // Schedule next update
+        }, 7 * 24 * 60 * 60 * 1000) // 7 days in milliseconds
+      }
+      
+      // Start weekly update cycle
+      scheduleWeeklyUpdate()
     }
   }, [])
 
@@ -561,12 +579,6 @@ return (
                 <p className="text-gray-300 text-lg max-w-3xl mx-auto">
                   AI-powered insights into TikTok, Instagram, YouTube, Facebook Reels, and Twitter algorithms to maximize your content reach and engagement
                 </p>
-              </div>
-
-              {/* Debug Info */}
-              <div className="text-center text-gray-400 text-sm">
-                <p>Algorithms loaded: {algorithms.length}</p>
-                <p>Mounted: {mounted ? 'Yes' : 'No'}</p>
               </div>
 
               {/* Algorithm Carousel */}
