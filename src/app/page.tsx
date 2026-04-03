@@ -30,7 +30,8 @@ import {
   TrendingUp,
   Video,
   Link,
-  Zap
+  Zap,
+  Crown
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -194,77 +195,67 @@ export default function HomePage() {
           )}
         </div>
 
-        <Tabs defaultValue="clip-analysis" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="clip-analysis" className="flex items-center gap-2">
-              <Video className="w-4 h-4" />
-              {t('clipAnalysis')}
-            </TabsTrigger>
-            <TabsTrigger value="tag-generator" className="flex items-center gap-2">
-              <Hash className="w-4 h-4" />
-              {t('tagGenerator')}
-            </TabsTrigger>
-            <TabsTrigger value="content-analysis" className="flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              {t('contentAnalysis')}
-            </TabsTrigger>
-            <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              {t('algorithmInfo')}
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              {t('settings')}
-            </TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="algorithm-info" className="w-full">
+          {/* Freemium Section */}
+          <div className="mb-6">
+            <h3 className="text-green-400 font-semibold mb-4 text-lg">{t('freemium')}</h3>
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4" />
+                {t('algorithmInfo')}
+              </TabsTrigger>
+              <TabsTrigger value="tag-generator-free" className="flex items-center gap-2">
+                <Hash className="w-4 h-4" />
+                {t('tagGeneratorFree')}
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="clip-analysis" className="mt-6">
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('clipAnalysis')}</h2>
-              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
-              <div className="max-w-md mx-auto">
-                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                  <div className="animate-pulse">
-                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
-                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
-                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
+          {/* Premium Section */}
+          <div className="mb-6">
+            <h3 className="text-purple-400 font-semibold mb-4 text-lg">
+              {t('premium')} 
+              {!hasPremium && (
+                <span className="text-yellow-400 text-sm ml-2">({t('subscriberOnly')})</span>
+              )}
+            </h3>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger 
+                value="clip-analysis" 
+                className="flex items-center gap-2"
+                disabled={!hasPremium}
+              >
+                <Video className="w-4 h-4" />
+                {t('clipAnalysis')}
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tag-generator" 
+                className="flex items-center gap-2"
+                disabled={!hasPremium}
+              >
+                <Hash className="w-4 h-4" />
+                {t('tagGenerator')}
+              </TabsTrigger>
+              <TabsTrigger 
+                value="content-analysis" 
+                className="flex items-center gap-2"
+                disabled={!hasPremium}
+              >
+                <FileText className="w-4 h-4" />
+                {t('contentAnalysis')}
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="tag-generator" className="mt-6">
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('tagGenerator')}</h2>
-              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
-              <div className="max-w-md mx-auto">
-                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                  <div className="animate-pulse">
-                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
-                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
-                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="content-analysis" className="mt-6">
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('contentAnalysis')}</h2>
-              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
-              <div className="max-w-md mx-auto">
-                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                  <div className="animate-pulse">
-                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
-                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
-                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
+          {/* Settings Tab */}
+          <div className="mb-6">
+            <TabsList className="grid w-full grid-cols-1">
+              <TabsTrigger value="settings" className="flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                {t('settings')}
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="algorithm-info" className="mt-6">
             <div className="text-center py-16">
@@ -280,6 +271,118 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="tag-generator-free" className="mt-6">
+            <div className="text-center py-16">
+              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('tagGeneratorFree')}</h2>
+              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
+              <div className="max-w-md mx-auto">
+                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="clip-analysis" className="mt-6">
+            {hasPremium ? (
+              <div className="text-center py-16">
+                <h2 className="text-2xl font-bold text-purple-400 mb-4">{t('clipAnalysis')}</h2>
+                <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                    <div className="animate-pulse">
+                      <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                      <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                      <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-16">
+                <Lock className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-yellow-400 mb-4">{t('clipAnalysis')}</h2>
+                <p className="text-gray-300 mb-8">{t('upgradeToPremium')}</p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                    <div className="text-center">
+                      <Crown className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+                      <p className="text-yellow-400 font-semibold">{t('subscriberOnly')}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="tag-generator" className="mt-6">
+            {hasPremium ? (
+              <div className="text-center py-16">
+                <h2 className="text-2xl font-bold text-purple-400 mb-4">{t('tagGenerator')}</h2>
+                <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                    <div className="animate-pulse">
+                      <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                      <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                      <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-16">
+                <Lock className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-yellow-400 mb-4">{t('tagGenerator')}</h2>
+                <p className="text-gray-300 mb-8">{t('upgradeToPremium')}</p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                    <div className="text-center">
+                      <Crown className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+                      <p className="text-yellow-400 font-semibold">{t('subscriberOnly')}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="content-analysis" className="mt-6">
+            {hasPremium ? (
+              <div className="text-center py-16">
+                <h2 className="text-2xl font-bold text-purple-400 mb-4">{t('contentAnalysis')}</h2>
+                <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                    <div className="animate-pulse">
+                      <div className="h-4 bg-gray-600 rounded mb-4"></div>
+                      <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
+                      <div className="h-4 bg-gray-600 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-16">
+                <Lock className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-yellow-400 mb-4">{t('contentAnalysis')}</h2>
+                <p className="text-gray-300 mb-8">{t('upgradeToPremium')}</p>
+                <div className="max-w-md mx-auto">
+                  <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+                    <div className="text-center">
+                      <Crown className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+                      <p className="text-yellow-400 font-semibold">{t('subscriberOnly')}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="settings" className="mt-6">

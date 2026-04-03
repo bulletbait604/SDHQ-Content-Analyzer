@@ -8,9 +8,16 @@ export const translations = {
     // Tab names
     clipAnalysis: 'Clip Analysis',
     tagGenerator: 'Tag Generator', 
+    tagGeneratorFree: 'Tag Generator (Free)',
     contentAnalysis: 'Content Analysis',
     algorithmInfo: 'Algorithm Info',
     settings: 'Settings',
+    
+    // Tab categories
+    freemium: 'Freemium',
+    premium: 'Premium',
+    subscriberOnly: 'Subscriber Only',
+    upgradeToPremium: 'Upgrade to Premium to access this feature',
     
     // Coming Soon content
     comingSoon: 'Coming Soon',
@@ -25,7 +32,7 @@ export const translations = {
     terms: 'Terms of Service',
     account: 'Account Settings',
     username: 'Username',
-    premium: 'Premium Status',
+    premiumStatus: 'Premium Status',
     active: 'Active',
     inactive: 'Inactive',
     save: 'Save Settings',
@@ -59,9 +66,16 @@ export const translations = {
     // Tab names
     clipAnalysis: 'Análisis de Clips',
     tagGenerator: 'Generador de Tags', 
+    tagGeneratorFree: 'Generador de Tags (Gratis)',
     contentAnalysis: 'Análisis de Contenido',
     algorithmInfo: 'Info de Algoritmos',
     settings: 'Configuración',
+    
+    // Tab categories
+    freemium: 'Freemium',
+    premium: 'Premium',
+    subscriberOnly: 'Solo Suscriptores',
+    upgradeToPremium: 'Actualiza a Premium para acceder a esta función',
     
     // Coming Soon content
     comingSoon: 'Próximamente',
@@ -78,7 +92,7 @@ export const translations = {
     username: 'Nombre de Usuario',
     email: 'Correo Electrónico',
     joined: 'Se unió',
-    premium: 'Estado Premium',
+    premiumStatus: 'Estado Premium',
     active: 'Activo',
     inactive: 'Inactivo',
     save: 'Guardar Configuración',
@@ -112,9 +126,16 @@ export const translations = {
     // Tab names
     clipAnalysis: 'Analyse de Clips',
     tagGenerator: 'Générateur de Tags', 
+    tagGeneratorFree: 'Générateur de Tags (Gratuit)',
     contentAnalysis: 'Analyse de Contenu',
     algorithmInfo: 'Info Algorithmes',
     settings: 'Paramètres',
+    
+    // Tab categories
+    freemium: 'Freemium',
+    premium: 'Premium',
+    subscriberOnly: 'Abonnés Seulement',
+    upgradeToPremium: 'Actualisez à Premium pour accéder à cette fonctionnalité',
     
     // Coming Soon content
     comingSoon: 'Bientôt Disponible',
@@ -129,7 +150,7 @@ export const translations = {
     terms: 'Conditions d\'Utilisation',
     account: 'Paramètres du Compte',
     username: 'Nom d\'Utilisateur',
-    premium: 'Statut Premium',
+    premiumStatus: 'Statut Premium',
     active: 'Actif',
     inactive: 'Inactif',
     save: 'Sauvegarder les Paramètres',
@@ -163,9 +184,16 @@ export const translations = {
     // Tab names
     clipAnalysis: 'Clip-Analyse',
     tagGenerator: 'Tag-Generator', 
+    tagGeneratorFree: 'Tag-Generator (Kostenlos)',
     contentAnalysis: 'Inhaltsanalyse',
     algorithmInfo: 'Algorithmus-Info',
     settings: 'Einstellungen',
+    
+    // Tab categories
+    freemium: 'Freemium',
+    premium: 'Premium',
+    subscriberOnly: 'Nur Abonnenten',
+    upgradeToPremium: 'Upgrade auf Premium für den Zugriff auf diese Funktion',
     
     // Coming Soon content
     comingSoon: 'Demnächst',
@@ -180,7 +208,7 @@ export const translations = {
     terms: 'Nutzungsbedingungen',
     account: 'Kontoeinstellungen',
     username: 'Benutzername',
-    premium: 'Premium-Status',
+    premiumStatus: 'Premium-Status',
     active: 'Aktiv',
     inactive: 'Inaktiv',
     save: 'Einstellungen Speichern',
@@ -214,9 +242,16 @@ export const translations = {
     // Tab names
     clipAnalysis: 'クリップ分析',
     tagGenerator: 'タグ生成', 
+    tagGeneratorFree: 'タグ生成（無料）',
     contentAnalysis: 'コンテンツ分析',
     algorithmInfo: 'アルゴリズム情報',
     settings: '設定',
+    
+    // Tab categories
+    freemium: 'フリーミアム',
+    premium: 'プレミアム',
+    subscriberOnly: '購読者のみ',
+    upgradeToPremium: 'この機能にアクセスするにはプレミアムにアップグレードしてください',
     
     // Coming Soon content
     comingSoon: '近日公開',
@@ -231,7 +266,7 @@ export const translations = {
     terms: '利用規約',
     account: 'アカウント設定',
     username: 'ユーザー名',
-    premium: 'プレミアムステータス',
+    premiumStatus: 'プレミアムステータス',
     active: 'アクティブ',
     inactive: '非アクティブ',
     save: '設定を保存',
