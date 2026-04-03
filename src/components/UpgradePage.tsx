@@ -101,12 +101,17 @@ export default function UpgradePage({ user, language, onLanguageChange }: Upgrad
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-gray-300">
-                Click the <span className="text-purple-400 font-semibold">Subscribe</span> button on Bulletbait604's profile
+                Go to <span className="text-purple-400 font-semibold">kick.com</span> and follow <span className="text-purple-400 font-semibold">@Bulletbait604</span>
               </p>
               <div className="bg-purple-900/20 border border-purple-500/50 rounded-lg p-4">
-                <p className="text-purple-300 text-sm">
-                  <span className="text-purple-400">💎</span> Choose your subscription tier
-                </p>
+                <a 
+                  href="https://kick.com/bulletbait604/subscribe" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-purple-300 text-sm font-bold hover:text-purple-200 transition-colors block text-center"
+                >
+                  CLICK HERE TO SUBSCRIBE ON KICK
+                </a>
               </div>
             </CardContent>
           </Card>
