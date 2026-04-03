@@ -147,8 +147,8 @@ return (
       {/* User Header */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center mb-8">
-          {/* Left side - User info when logged in */}
-          <div className="flex items-center gap-3">
+          {/* Left side - User info and Settings */}
+          <div className="flex items-center gap-4">
             {user && (
               <>
                 <img 
@@ -160,6 +160,16 @@ return (
                   <p className="text-green-400 font-semibold">{user.display_name}</p>
                   <p className="text-gray-400 text-sm">@{user.username}</p>
                 </div>
+                <Button
+                  onClick={() => {
+                    // Navigate to settings tab
+                    window.location.hash = 'settings'
+                  }}
+                  className="bg-gray-600 hover:bg-gray-500 text-white"
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  {t('settings')}
+                </Button>
               </>
             )}
           </div>
@@ -200,7 +210,7 @@ return (
         </div>
 
         <Tabs defaultValue="algorithm-info" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               {t('algorithmInfo')}
@@ -215,7 +225,7 @@ return (
               disabled={!hasPremium}
             >
               <Video className="w-4 h-4" />
-              {t('clipAnalysis')}
+              {t('clipAnalysis')} {t('premium')}
             </TabsTrigger>
             <TabsTrigger 
               value="tag-generator" 
@@ -223,22 +233,18 @@ return (
               disabled={!hasPremium}
             >
               <Hash className="w-4 h-4" />
-              {t('tagGenerator')}
+              {t('tagGenerator')} {t('premium')}
             </TabsTrigger>
+          </TabsList>
+
+          <TabsList className="grid w-full grid-cols-1 mb-8">
             <TabsTrigger 
               value="content-analysis" 
               className="flex items-center gap-2"
               disabled={!hasPremium}
             >
               <FileText className="w-4 h-4" />
-              {t('contentAnalysis')}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsList className="grid w-full grid-cols-1 mb-8">
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              {t('settings')}
+              {t('contentAnalysis')} {t('premium')}
             </TabsTrigger>
           </TabsList>
 
