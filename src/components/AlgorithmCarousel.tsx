@@ -106,22 +106,6 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                   ))}
                 </div>
 
-                {/* AI Analysis */}
-                {algorithm.aiAnalysis && (
-                  <div className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg p-4 mb-6 border border-purple-500/30">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Zap className="w-5 h-5 text-purple-400" />
-                      <h4 className="text-purple-400 font-semibold">AI Analysis</h4>
-                    </div>
-                    <div className="text-purple-300 text-sm leading-relaxed max-h-32 overflow-y-auto">
-                      {algorithm.aiAnalysis.length > 200 
-                        ? `${algorithm.aiAnalysis.substring(0, 200)}...` 
-                        : algorithm.aiAnalysis
-                      }
-                    </div>
-                  </div>
-                )}
-
                 {/* Action Buttons */}
                 <div className="flex gap-3">
                   <Button

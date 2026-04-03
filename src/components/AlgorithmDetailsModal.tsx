@@ -126,33 +126,6 @@ export default function AlgorithmDetailsModal({ algorithm, isOpen, onClose }: Al
             </div>
           </div>
 
-          {/* AI Analysis */}
-          {algorithm.aiAnalysis && (
-            <div>
-              <h3 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-purple-400" />
-                AI-Powered Insights
-              </h3>
-              <div className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 rounded-lg p-4 border border-purple-500/30">
-                <div className="text-purple-300 leading-relaxed max-h-64 overflow-y-auto">
-                  {algorithm.aiAnalysis.includes('{') || algorithm.aiAnalysis.includes('[') ? (
-                    <div className="space-y-2">
-                      <p className="text-purple-400 text-sm">AI Analysis Data:</p>
-                      <pre className="text-purple-200 text-xs bg-black/30 p-2 rounded overflow-x-auto">
-                        {algorithm.aiAnalysis.length > 500 
-                          ? algorithm.aiAnalysis.substring(0, 500) + '...' 
-                          : algorithm.aiAnalysis
-                        }
-                      </pre>
-                    </div>
-                  ) : (
-                    <p>{algorithm.aiAnalysis}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Weekly Insights */}
           {algorithm.weeklyInsights && algorithm.weeklyInsights.length > 0 && (
             <div>
@@ -160,16 +133,15 @@ export default function AlgorithmDetailsModal({ algorithm, isOpen, onClose }: Al
                 <Clock className="w-5 h-5 text-green-400" />
                 Latest Weekly Insights
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {algorithm.weeklyInsights.map((insight, index) => (
                   <div key={index} className="bg-green-900/20 rounded-lg p-4 border border-green-500/30">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5">
                         {index + 1}
                       </div>
-                      <span className="text-green-400 font-semibold">Weekly Update</span>
+                      <p className="text-green-300 text-sm leading-relaxed">{insight}</p>
                     </div>
-                    <p className="text-green-300 text-sm">{insight}</p>
                   </div>
                 ))}
               </div>
