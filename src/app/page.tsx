@@ -96,6 +96,38 @@ export default function HomePage() {
     }
   }, [])
 
+  // Listen for subscriber list updates from Settings component
+  useEffect(() => {
+    const handleSubscriberListUpdated = (event: CustomEvent) => {
+      console.log('📢 Received subscriberListUpdated event:', event.detail)
+      
+      if (user) {
+        // Re-check the current user's premium status
+        const subscribersManager = SubscribersManager.getInstance()
+        const isSub = subscribersManager.isSubscriber(user.username)
+        console.log('🔄 Updated premium status:', {
+          username: user.username,
+          wasPremium: hasPremium,
+          isNowPremium: isSub
+        })
+        
+        // Update the premium status if it changed
+        if (hasPremium !== isSub) {
+          setHasPremium(isSub)
+          console.log('✅ Premium status updated in UI')
+        }
+      }
+    }
+
+    // Add event listener
+    window.addEventListener('subscriberListUpdated', handleSubscriberListUpdated as EventListener)
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('subscriberListUpdated', handleSubscriberListUpdated as EventListener)
+    }
+  }, [user, hasPremium])
+
   const handleThemeChange = (newTheme: 'dark' | 'light') => {
     setTheme(newTheme)
     if (typeof window !== 'undefined') {
