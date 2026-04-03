@@ -92,28 +92,18 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                   {algorithm.description}
                 </p>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                    <Eye className="w-6 h-6 text-blue-400 mx-auto mb-2" />
-                    <div className="text-sm text-gray-300">Views</div>
-                    <div className="text-lg font-bold text-blue-400">High</div>
-                  </div>
-                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                    <Heart className="w-6 h-6 text-red-400 mx-auto mb-2" />
-                    <div className="text-sm text-gray-300">Engagement</div>
-                    <div className="text-lg font-bold text-red-400">Strong</div>
-                  </div>
-                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                    <Share2 className="w-6 h-6 text-green-400 mx-auto mb-2" />
-                    <div className="text-sm text-gray-300">Shares</div>
-                    <div className="text-lg font-bold text-green-400">Optimal</div>
-                  </div>
-                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                    <TrendingUp className="w-6 h-6 text-purple-400 mx-auto mb-2" />
-                    <div className="text-sm text-gray-300">Reach</div>
-                    <div className="text-lg font-bold text-purple-400">Maximum</div>
-                  </div>
+                {/* Tips Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  {algorithm.tipsAndTricks.slice(0, 4).map((tip, index) => (
+                    <div key={index} className="bg-gray-800/50 rounded-lg p-4 border border-gray-600">
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5">
+                          {index + 1}
+                        </div>
+                        <p className="text-gray-300 text-sm leading-relaxed">{tip}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* AI Analysis */}
@@ -136,14 +126,14 @@ export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: Alg
                     className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold"
                   >
                     <TrendingUp className="w-4 h-4 mr-2" />
-                    View Details
+                    View All Tips
                   </Button>
                   <Button
                     variant="outline"
                     className="border-gray-600 text-gray-300 hover:bg-gray-800"
                   >
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    Tips
+                    <Zap className="w-4 h-4 mr-2" />
+                    Analysis
                   </Button>
                 </div>
               </div>
