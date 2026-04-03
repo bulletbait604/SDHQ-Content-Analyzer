@@ -37,13 +37,20 @@ class AlgorithmAnalyzer {
   }
 
   static getInstance(): AlgorithmAnalyzer {
-    if (!AlgorithmAnalyzer.instance) {
-      AlgorithmAnalyzer.instance = new AlgorithmAnalyzer()
+    if (AlgorithmAnalyzer.instance) {
+      return AlgorithmAnalyzer.instance
     }
-    return AlgorithmAnalyzer.instance
+    const instance = new AlgorithmAnalyzer()
+    instance.algorithms = new Map()
+    instance.initializeAlgorithms()
+    AlgorithmAnalyzer.instance = instance
+    return instance
   }
 
   private initializeAlgorithms() {
+    // Clear any existing data and force refresh with new URLs
+    this.algorithms.clear()
+    
     const defaultAlgorithms: SocialMediaAlgorithm[] = [
       {
         id: 'tiktok',

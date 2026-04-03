@@ -106,16 +106,19 @@ export default function HomePage() {
       // Clear cache and force refresh with new logo URLs
       if (typeof window !== 'undefined') {
         localStorage.removeItem('sdhq_algorithms')
-        console.log('🗑️ Cleared algorithm cache to refresh logo URLs')
+        localStorage.removeItem('sdhq_algorithm_data')
+        console.log('🗑️ Cleared all algorithm caches to refresh logo URLs')
       }
       
-      const allAlgorithms = algorithmAnalyzer.getAllAlgorithms()
+      // Force algorithm analyzer to reset with new URLs
+      const analyzer = algorithmAnalyzer
+      const allAlgorithms = analyzer.getAllAlgorithms()
       console.log('🔄 Loading algorithms:', allAlgorithms.length)
       console.log('🔍 First algorithm logo URL:', allAlgorithms[0]?.logo)
       
-      // Fallback to static data if algorithm analyzer fails
-      if (allAlgorithms.length === 0) {
-        console.log('🔄 Using fallback algorithms')
+      // If still using old URLs, force fallback
+      if (allAlgorithms[0]?.logo?.includes('upload.wikimedia.org')) {
+        console.log('🔄 Detected old URLs, forcing fallback with new logo URLs')
         const fallbackAlgorithms = [
           {
             id: 'tiktok',
