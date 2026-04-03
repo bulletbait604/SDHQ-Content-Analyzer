@@ -33,6 +33,7 @@ import {
   Zap,
   Crown
 } from 'lucide-react'
+import UpgradePage from '@/components/UpgradePage'
 
 export default function HomePage() {
   const [user, setUser] = useState<any>(null)
@@ -195,7 +196,15 @@ return (
                     {hasPremium ? (
                       <Badge className="bg-purple-600 text-white text-xs">Subscribed</Badge>
                     ) : (
-                      <Badge className="bg-gray-600 text-white text-xs">Free User</Badge>
+                      <>
+                        <Badge className="bg-gray-600 text-white text-xs">Free User</Badge>
+                        <Button
+                          onClick={() => setActiveTab('upgrade')}
+                          className="bg-yellow-600 hover:bg-yellow-500 text-white text-xs ml-2"
+                        >
+                          Upgrade
+                        </Button>
+                      </>
                     )}
                   </div>
                   <p className="text-gray-400 text-sm">@{user.username}</p>
@@ -435,6 +444,10 @@ return (
                 <p className="text-gray-300">Please log in to access settings</p>
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="upgrade" className="mt-6">
+            <UpgradePage user={user} language={language} onLanguageChange={handleLanguageChange} />
           </TabsContent>
         </Tabs>
 

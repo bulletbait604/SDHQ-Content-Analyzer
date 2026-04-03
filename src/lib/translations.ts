@@ -18,6 +18,7 @@ export const translations = {
     premium: 'Premium',
     subscriberOnly: 'Subscriber Only',
     upgradeToPremium: 'Upgrade to Premium to access this feature',
+    subscribeToUpgrade: 'Subscribe to Upgrade',
     
     // Coming Soon content
     comingSoon: 'Coming Soon',
@@ -76,6 +77,7 @@ export const translations = {
     premium: 'Premium',
     subscriberOnly: 'Solo Suscriptores',
     upgradeToPremium: 'Actualiza a Premium para acceder a esta función',
+    subscribeToUpgrade: 'Suscríbete para Actualizar',
     
     // Coming Soon content
     comingSoon: 'Próximamente',
@@ -136,6 +138,7 @@ export const translations = {
     premium: 'Premium',
     subscriberOnly: 'Abonnés Seulement',
     upgradeToPremium: 'Actualisez à Premium pour accéder à cette fonctionnalité',
+    subscribeToUpgrade: 'Abonnez-vous pour Mettre à Niveau',
     
     // Coming Soon content
     comingSoon: 'Bientôt Disponible',
@@ -194,6 +197,7 @@ export const translations = {
     premium: 'Premium',
     subscriberOnly: 'Nur Abonnenten',
     upgradeToPremium: 'Upgrade auf Premium für den Zugriff auf diese Funktion',
+    subscribeToUpgrade: 'Abonnieren für Upgrade',
     
     // Coming Soon content
     comingSoon: 'Demnächst',
@@ -252,6 +256,7 @@ export const translations = {
     premium: 'プレミアム',
     subscriberOnly: '購読者のみ',
     upgradeToPremium: 'この機能にアクセスするにはプレミアムにアップグレードしてください',
+    subscribeToUpgrade: 'アップグレードするには購読してください',
     
     // Coming Soon content
     comingSoon: '近日公開',
