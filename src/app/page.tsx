@@ -11,6 +11,7 @@ import { KickAuth } from '@/components/KickAuth'
 import { ClipAnalysis } from '@/components/ClipAnalysis'
 import { Settings as SettingsComponent } from '@/components/Settings'
 import { Footer } from '@/components/Footer'
+import TagGenerator from '@/components/TagGenerator'
 import { translations, Language } from '@/lib/translations'
 import SubscribersManager from '@/lib/subscribers'
 
@@ -544,7 +545,7 @@ return (
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-6 mb-8">
             <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               {t('algorithmInfo')}
@@ -607,19 +608,7 @@ return (
           </TabsContent>
 
           <TabsContent value="tag-generator-free" className="mt-6">
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-green-400 mb-4">{t('tagGeneratorFree')}</h2>
-              <p className="text-gray-300 mb-8">{t('comingSoon')}</p>
-              <div className="max-w-md mx-auto">
-                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                  <div className="animate-pulse">
-                    <div className="h-4 bg-gray-600 rounded mb-4"></div>
-                    <div className="h-4 bg-gray-600 rounded mb-4 w-3/4"></div>
-                    <div className="h-4 bg-gray-600 rounded w-1/2"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TagGenerator />
           </TabsContent>
 
           <TabsContent value="clip-analysis" className="mt-6">
