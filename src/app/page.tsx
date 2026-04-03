@@ -138,7 +138,11 @@ export default function HomePage() {
     )
   }
 
-  return (
+  // Tab categories for reference
+const freemiumTabs = ['algorithm-info', 'tag-generator-free']
+const premiumTabs = ['clip-analysis', 'tag-generator', 'content-analysis']
+
+return (
     <div className="min-h-screen bg-black text-white">
       {/* User Header */}
       <div className="container mx-auto px-4 py-4">
@@ -196,66 +200,47 @@ export default function HomePage() {
         </div>
 
         <Tabs defaultValue="algorithm-info" className="w-full">
-          {/* Freemium Section */}
-          <div className="mb-6">
-            <h3 className="text-green-400 font-semibold mb-4 text-lg">{t('freemium')}</h3>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                {t('algorithmInfo')}
-              </TabsTrigger>
-              <TabsTrigger value="tag-generator-free" className="flex items-center gap-2">
-                <Hash className="w-4 h-4" />
-                {t('tagGeneratorFree')}
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="grid w-full grid-cols-5 mb-8">
+            <TabsTrigger value="algorithm-info" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              {t('algorithmInfo')}
+            </TabsTrigger>
+            <TabsTrigger value="tag-generator-free" className="flex items-center gap-2">
+              <Hash className="w-4 h-4" />
+              {t('tagGeneratorFree')}
+            </TabsTrigger>
+            <TabsTrigger 
+              value="clip-analysis" 
+              className="flex items-center gap-2"
+              disabled={!hasPremium}
+            >
+              <Video className="w-4 h-4" />
+              {t('clipAnalysis')}
+            </TabsTrigger>
+            <TabsTrigger 
+              value="tag-generator" 
+              className="flex items-center gap-2"
+              disabled={!hasPremium}
+            >
+              <Hash className="w-4 h-4" />
+              {t('tagGenerator')}
+            </TabsTrigger>
+            <TabsTrigger 
+              value="content-analysis" 
+              className="flex items-center gap-2"
+              disabled={!hasPremium}
+            >
+              <FileText className="w-4 h-4" />
+              {t('contentAnalysis')}
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Premium Section */}
-          <div className="mb-6">
-            <h3 className="text-purple-400 font-semibold mb-4 text-lg">
-              {t('premium')} 
-              {!hasPremium && (
-                <span className="text-yellow-400 text-sm ml-2">({t('subscriberOnly')})</span>
-              )}
-            </h3>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger 
-                value="clip-analysis" 
-                className="flex items-center gap-2"
-                disabled={!hasPremium}
-              >
-                <Video className="w-4 h-4" />
-                {t('clipAnalysis')}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="tag-generator" 
-                className="flex items-center gap-2"
-                disabled={!hasPremium}
-              >
-                <Hash className="w-4 h-4" />
-                {t('tagGenerator')}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="content-analysis" 
-                className="flex items-center gap-2"
-                disabled={!hasPremium}
-              >
-                <FileText className="w-4 h-4" />
-                {t('contentAnalysis')}
-              </TabsTrigger>
-            </TabsList>
-          </div>
-
-          {/* Settings Tab */}
-          <div className="mb-6">
-            <TabsList className="grid w-full grid-cols-1">
-              <TabsTrigger value="settings" className="flex items-center gap-2">
-                <Settings className="w-4 h-4" />
-                {t('settings')}
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="grid w-full grid-cols-1 mb-8">
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+              <Settings className="w-4 h-4" />
+              {t('settings')}
+            </TabsTrigger>
+          </TabsList>
 
           <TabsContent value="algorithm-info" className="mt-6">
             <div className="text-center py-16">
