@@ -101,6 +101,14 @@ export default function HomePage() {
           console.error('❌ Error loading stored user:', error)
         }
       }
+
+      // Load algorithms
+      const allAlgorithms = algorithmAnalyzer.getAllAlgorithms()
+      console.log('🔄 Loading algorithms:', allAlgorithms.length)
+      setAlgorithms(allAlgorithms)
+      
+      // Update algorithms with AI on component mount
+      algorithmAnalyzer.updateAlgorithmsWithAI()
     }
   }, [])
 
@@ -348,11 +356,24 @@ return (
                 </p>
               </div>
 
+              {/* Debug Info */}
+              <div className="text-center text-gray-400 text-sm">
+                <p>Algorithms loaded: {algorithms.length}</p>
+                <p>Mounted: {mounted ? 'Yes' : 'No'}</p>
+              </div>
+
               {/* Algorithm Carousel */}
-              <AlgorithmCarousel 
-                algorithms={algorithms}
-                onSelectAlgorithm={handleSelectAlgorithm}
-              />
+              {algorithms.length > 0 ? (
+                <AlgorithmCarousel 
+                  algorithms={algorithms}
+                  onSelectAlgorithm={handleSelectAlgorithm}
+                />
+              ) : (
+                <div className="text-center py-16">
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                  <p className="text-gray-300">Loading algorithm data...</p>
+                </div>
+              )}
             </div>
           </TabsContent>
 
