@@ -58,7 +58,7 @@ export default function UpgradePage({ user, language, onLanguageChange }: Upgrad
                 <iframe 
                   src={`https://player.kick.com/${user?.username || 'YOUR_USERNAME'}`}
                   height="720" 
-                  width="1280"
+                  width="750"
                   frameBorder="0" 
                   scrolling="no" 
                   allowFullScreen={true}
