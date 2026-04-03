@@ -54,11 +54,11 @@ export default function UpgradePage({ user, language, onLanguageChange }: Upgrad
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="aspect-video bg-black rounded-lg overflow-hidden">
+              <div className="aspect-video bg-black rounded-lg overflow-hidden max-w-2xl mx-auto">
                 <iframe 
                   src={`https://player.kick.com/${user?.username || 'YOUR_USERNAME'}`}
-                  height="720" 
-                  width="750"
+                  height="480" 
+                  width="640"
                   frameBorder="0" 
                   scrolling="no" 
                   allowFullScreen={true}
