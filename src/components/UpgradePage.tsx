@@ -157,7 +157,7 @@ export default function UpgradePage({ user, language, onLanguageChange }: Upgrad
             <Card className="bg-black/50 border-purple-500/30 backdrop-blur-sm transform hover:scale-105 transition-transform">
               <CardContent className="p-6 text-center">
                 <Sparkles className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-                <h3 className="text-purple-400 font-semibold mb-2">Tag Generator</h3>
+                <h3 className="text-purple-400 font-semibold mb-2">AI Tag Generation</h3>
                 <p className="text-gray-300 text-sm">Advanced tag generation with AI optimization</p>
               </CardContent>
             </Card>

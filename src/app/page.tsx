@@ -34,6 +34,7 @@ import {
   Crown
 } from 'lucide-react'
 import UpgradePage from '@/components/UpgradePage'
+import AdminDashboard from '@/components/AdminDashboard'
 
 export default function HomePage() {
   const [user, setUser] = useState<any>(null)
@@ -460,6 +461,18 @@ return (
 
           <TabsContent value="upgrade" className="mt-6">
             <UpgradePage user={user} language={language} onLanguageChange={handleLanguageChange} />
+          </TabsContent>
+
+          <TabsContent value="admin-dashboard" className="mt-6">
+            {user && user.username === 'bulletbait604' ? (
+              <AdminDashboard user={user} language={language} />
+            ) : (
+              <div className="text-center py-16">
+                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-500 mx-auto mb-4"></div>
+                <h2 className="text-2xl font-bold text-red-400 mb-4">Access Denied</h2>
+                <p className="text-gray-300">Admin access required</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
 

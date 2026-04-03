@@ -15,7 +15,8 @@ import {
   Users,
   UserPlus,
   Crown,
-  Trash2
+  Trash2,
+  Eye
 } from 'lucide-react'
 
 import { translations, Language } from '@/lib/translations'
@@ -238,22 +239,49 @@ export function Settings({ user, language, onLanguageChange }: SettingsProps) {
 
       {/* Admin Badge */}
       {isAdmin && (
-        <Card className="bg-black border-yellow-500/30">
-          <CardHeader>
-            <CardTitle className="text-yellow-400 flex items-center gap-2">
-              <Crown className="w-5 h-5" />
-              {t('premiumStatus')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <Badge className="bg-yellow-600/20 text-yellow-400 border-yellow-500">
+        <>
+          <Card className="bg-black border-yellow-500/30">
+            <CardHeader>
+              <CardTitle className="text-yellow-400 flex items-center gap-2">
+                <Crown className="w-5 h-5" />
                 {t('premiumStatus')}
-              </Badge>
-              <span className="text-gray-300 text-sm">Full system access</span>
-            </div>
-          </CardContent>
-        </Card>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-2">
+                <Badge className="bg-yellow-600/20 text-yellow-400 border-yellow-500">
+                  {t('premiumStatus')}
+                </Badge>
+                <span className="text-gray-300 text-sm">Full system access</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Admin Dashboard */}
+          <Card className="bg-black border-purple-500/30">
+            <CardHeader>
+              <CardTitle className="text-purple-400 flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Admin Dashboard
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button
+                onClick={() => {
+                  // Navigate to admin dashboard
+                  window.location.hash = 'admin-dashboard'
+                  // Force tab change
+                  const event = new CustomEvent('tabChange', { detail: 'admin-dashboard' })
+                  window.dispatchEvent(event)
+                }}
+                className="bg-purple-600 hover:bg-purple-500 text-white w-full"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View User Activity
+              </Button>
+            </CardContent>
+          </Card>
+        </>
       )}
 
       {/* Subscriber Management - Admin Only */}
