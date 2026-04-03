@@ -10,7 +10,7 @@ interface Subscriber {
 class SubscribersManager {
   private static instance: SubscribersManager
   private subscribers: Subscriber[] = []
-  private readonly STORAGE_KEY = '57hq_subscribers_list'
+  private readonly STORAGE_KEY = 'sdhq_subscribers_list'
   private readonly ADMIN_USERS = ['bulletbait604'] // Add more admins here if needed
 
   private constructor() {

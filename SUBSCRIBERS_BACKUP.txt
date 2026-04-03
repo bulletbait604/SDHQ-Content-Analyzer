@@ -1,0 +1,35 @@
+SDHQ Content Optimizer - Subscribers List Backup
+==================================================
+
+This file serves as a backup reference for the subscribers list.
+The actual subscriber data is stored in browser localStorage under the key: 'sdhq_subscribers_list'
+
+Current Admin Users:
+- bulletbait604 (Primary Administrator)
+
+How to Access Subscriber List:
+1. Open browser developer tools (F12)
+2. Go to Application/Storage tab
+3. Find localStorage
+4. Look for key: 'sdhq_subscribers_list'
+5. The value contains JSON data with subscriber information
+
+Subscriber Data Structure:
+{
+  "username": "string",
+  "addedAt": "Date",
+  "addedBy": "string", 
+  "status": "active" | "inactive"
+}
+
+Admin Functions:
+- Only admin users can add/remove subscribers
+- Admin users are defined in src/lib/subscribers.ts
+- Default admin: bulletbait604
+
+Emergency Recovery:
+If localStorage is cleared, subscribers will need to be re-added by admin.
+The system automatically re-adds the admin user (bulletbait604) if list is empty.
+
+Last Updated: 2026-04-03
+Application: SDHQ Content Optimizer
