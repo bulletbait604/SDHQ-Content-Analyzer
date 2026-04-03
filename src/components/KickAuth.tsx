@@ -208,50 +208,33 @@ export function KickAuth({ onUserChange }: KickAuthProps) {
 
   // Default login UI
   return (
-    <Card className="bg-black border border-cyan-500">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <LogIn className="h-5 w-5 text-cyan-400" />
-          Connect Your Kick Account
-        </CardTitle>
-        <CardDescription className="text-cyan-300">
-          Login to display your profile from bulletbait604
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="text-center">
-            <p className="text-sm text-cyan-300 mb-4">
-              Connect with Kick to see your profile
-            </p>
-          </div>
-          
-          {error && (
-            <div className="p-3 bg-red-900 border border-red-500 rounded-lg">
-              <p className="text-sm text-red-300">{error}</p>
-            </div>
-          )}
-          
-          <Button
-            onClick={handleLogin}
-            disabled={isLoading}
-            className="w-full bg-cyan-500 text-black hover:bg-cyan-400"
-            style={{ boxShadow: '0 0 15px rgba(0, 255, 255, 0.3)' }}
-          >
-            {isLoading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin mr-2" />
-                Connecting...
-              </>
-            ) : (
-              <>
-                <LogIn className="h-4 w-4 mr-2" />
-                Login with Kick
-              </>
-            )}
-          </Button>
+    <div className="text-center">
+      <p className="text-gray-300 mb-4">
+        Login with KICK to access freemium features.
+      </p>
+      <Button
+        onClick={handleLogin}
+        disabled={isLoading}
+        className="bg-cyan-500 text-black hover:bg-cyan-400"
+      >
+        {isLoading ? (
+          <>
+            <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin mr-2" />
+            Connecting...
+          </>
+        ) : (
+          <>
+            <LogIn className="h-4 w-4 mr-2" />
+            Login with Kick
+          </>
+        )}
+      </Button>
+      
+      {error && (
+        <div className="mt-4 p-3 bg-red-900 border border-red-500 rounded-lg">
+          <p className="text-sm text-red-300">{error}</p>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   )
 }
