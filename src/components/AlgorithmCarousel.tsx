@@ -14,7 +14,7 @@ interface AlgorithmCarouselProps {
 
 export default function AlgorithmCarousel({ algorithms, onSelectAlgorithm }: AlgorithmCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false) // Disabled by default
 
   useEffect(() => {
     if (!isAutoPlaying) return
