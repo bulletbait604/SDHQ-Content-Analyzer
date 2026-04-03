@@ -117,13 +117,15 @@ export default function HomePage() {
     }
   }
 
-  const applyTheme = (theme: 'dark' | 'light') => {
-    if (theme === 'light') {
-      document.documentElement.classList.remove('dark')
-      document.documentElement.classList.add('light')
+  const handleUserChange = (newUser: any) => {
+    setUser(newUser)
+    if (newUser) {
+      // Check premium status when user logs in
+      const subscribersManager = SubscribersManager.getInstance()
+      const isSub = subscribersManager.isSubscriber(newUser.username)
+      setHasPremium(isSub)
     } else {
-      document.documentElement.classList.remove('light')
-      document.documentElement.classList.add('dark')
+      setHasPremium(false)
     }
   }
 
@@ -137,6 +139,44 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* User Header */}
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center mb-8">
+          {/* Left side - User info when logged in */}
+          <div className="flex items-center gap-3">
+            {user && (
+              <>
+                <img 
+                  src={user.profile_image_url} 
+                  alt={user.display_name}
+                  className="w-10 h-10 rounded-full border-2 border-green-500"
+                />
+                <div>
+                  <p className="text-green-400 font-semibold">{user.display_name}</p>
+                  <p className="text-gray-400 text-sm">@{user.username}</p>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Right side - Logout when logged in */}
+          <div className="flex items-center">
+            {user && (
+              <Button
+                onClick={() => {
+                  localStorage.removeItem('kickUser')
+                  setUser(null)
+                  setHasPremium(false)
+                }}
+                className="bg-red-600 hover:bg-red-500 text-white"
+              >
+                Logout
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
@@ -145,6 +185,13 @@ export default function HomePage() {
           <p className="text-center text-gray-400 mb-8">
             {t('appDescription')}
           </p>
+          
+          {/* KICK Login Option */}
+          {!user && (
+            <div className="text-center mt-8">
+              <KickAuth onUserChange={handleUserChange} />
+            </div>
+          )}
         </div>
 
         <Tabs defaultValue="clip-analysis" className="w-full">
@@ -247,7 +294,7 @@ export default function HomePage() {
           </TabsContent>
         </Tabs>
 
-        <Footer />
+        <Footer language={language} />
       </div>
     </div>
   )

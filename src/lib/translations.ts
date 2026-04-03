@@ -42,7 +42,14 @@ export const translations = {
     usernamePlaceholder: 'Enter username...',
     addSuccess: 'Subscriber added successfully!',
     removeSuccess: 'Subscriber removed successfully!',
-    adminOnly: 'Administrator Only'
+    adminOnly: 'Administrator Only',
+    
+    // Footer specific
+    powered: 'Powered by AI',
+    rights: '© 2026 SDHQ Content Optimizer. All rights reserved.',
+    legal: 'Legal',
+    support: 'Support',
+    company: 'SDHQ - Stream Dreams HQ'
   },
   es: {
     // App title and description
@@ -88,7 +95,14 @@ export const translations = {
     usernamePlaceholder: 'Ingrese nombre de usuario...',
     addSuccess: '¡Suscriptor agregado con éxito!',
     removeSuccess: '¡Suscriptor eliminado con éxito!',
-    adminOnly: 'Solo Administrador'
+    adminOnly: 'Solo Administrador',
+    
+    // Footer specific
+    powered: 'Impulsado por IA',
+    rights: '© 2026 SDHQ Content Optimizer. Todos los derechos reservados.',
+    legal: 'Legal',
+    support: 'Soporte',
+    company: 'SDHQ - Stream Dreams HQ'
   },
   fr: {
     // App title and description
@@ -132,7 +146,14 @@ export const translations = {
     usernamePlaceholder: 'Entrez le nom d\'utilisateur...',
     addSuccess: 'Abonné ajouté avec succès!',
     removeSuccess: 'Abonné supprimé avec succès!',
-    adminOnly: 'Administrateur Seulement'
+    adminOnly: 'Administrateur Seulement',
+    
+    // Footer specific
+    powered: 'Alimenté par IA',
+    rights: '© 2026 SDHQ Content Optimizer. Tous droits réservés.',
+    legal: 'Legal',
+    support: 'Support',
+    company: 'SDHQ - Stream Dreams HQ'
   },
   de: {
     // App title and description
@@ -176,7 +197,14 @@ export const translations = {
     usernamePlaceholder: 'Benutzername eingeben...',
     addSuccess: 'Abonnent erfolgreich hinzugefügt!',
     removeSuccess: 'Abonnent erfolgreich entfernt!',
-    adminOnly: 'Nur Administrator'
+    adminOnly: 'Nur Administrator',
+    
+    // Footer specific
+    powered: 'Angetrieben von KI',
+    rights: '© 2026 SDHQ Content Optimizer. Alle Rechte vorbehalten.',
+    legal: 'Legal',
+    support: 'Support',
+    company: 'SDHQ - Stream Dreams HQ'
   },
   ja: {
     // App title and description
@@ -220,7 +248,14 @@ export const translations = {
     usernamePlaceholder: 'ユーザー名を入力...',
     addSuccess: '購読者が正常に追加されました！',
     removeSuccess: '購読者が正常に削除されました！',
-    adminOnly: '管理者のみ'
+    adminOnly: '管理者のみ',
+    
+    // Footer specific
+    powered: 'AI駆動',
+    rights: '© 2026 SDHQ Content Optimizer. 全権利留保。',
+    legal: 'Legal',
+    support: 'サポート',
+    company: 'SDHQ - Stream Dreams HQ'
   }
 }
 
