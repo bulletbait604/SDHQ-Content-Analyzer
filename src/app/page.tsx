@@ -103,8 +103,15 @@ export default function HomePage() {
       }
 
       // Load algorithms
+      // Clear cache and force refresh with new logo URLs
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('sdhq_algorithms')
+        console.log('🗑️ Cleared algorithm cache to refresh logo URLs')
+      }
+      
       const allAlgorithms = algorithmAnalyzer.getAllAlgorithms()
       console.log('🔄 Loading algorithms:', allAlgorithms.length)
+      console.log('🔍 First algorithm logo URL:', allAlgorithms[0]?.logo)
       
       // Fallback to static data if algorithm analyzer fails
       if (allAlgorithms.length === 0) {
